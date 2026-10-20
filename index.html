@@ -38,14 +38,12 @@
         .border-brand { border-color: var(--brand-500); }
         .bg-brand-soft { background-color: rgba(202, 138, 4, 0.12); }
 
-        /* Scrollbar sutil */
         ::-webkit-scrollbar { width: 5px; height: 5px; }
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: rgba(148, 163, 184, 0.35); border-radius: 9999px; }
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
-        /* Impressão Limpa de Espelhos */
         @media print {
             body { background: #ffffff !important; color: #0f172a !important; }
             #app, #global-footer, .modal-backdrop, .no-print { display: none !important; }
@@ -64,7 +62,7 @@
 
     <!-- Container Global de Modais -->
     <div id="modal-root" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm hidden items-end sm:items-center justify-center p-0 sm:p-4 overflow-y-auto modal-backdrop">
-        <div id="modal-content" class="bg-white dark:bg-slate-900 border-t sm:border border-slate-200 dark:border-slate-800 rounded-t-3xl sm:rounded-3xl w-full max-w-2xl p-6 shadow-2xl relative max-h-[92dvh] overflow-y-auto"></div>
+        <div id="modal-content" class="bg-white dark:bg-slate-900 border-t sm:border border-slate-200 dark:border-slate-800 rounded-t-3xl sm:rounded-3xl w-full max-w-3xl p-6 shadow-2xl relative max-h-[92dvh] overflow-y-auto"></div>
     </div>
 
     <!-- Rodapé Discreto Responsivo -->
@@ -91,6 +89,7 @@
         // =========================================================================
         const SUPABASE_URL = "https://bccxujolvlgjmkmmxyog.supabase.co";
         const SUPABASE_KEY = "sb_publishable_sxoMKSN-ELdj7IGutdYzAQ_3HrvHUNQ";
+        const MASTER_CONFIG_ID = "__master_saas__";
 
         const urlParams = new URLSearchParams(window.location.search);
         let storeId = urlParams.get('clinica') || urlParams.get('loja') || 'demo';
@@ -128,7 +127,6 @@
             </svg>
         `);
 
-        // Paletas de Cores Personalizáveis
         const THEME_PALETTES = {
             gold:     { name: 'Dourado Terapêutico (Padrão Logo)', c50: '#fefce8', c100: '#fef9c3', c500: '#ca8a04', c600: '#a16207', c700: '#854d0e' },
             emerald:  { name: 'Esmeralda Wellness',                c50: '#ecfdf5', c100: '#d1fae5', c500: '#10b981', c600: '#059669', c700: '#047857' },
@@ -138,16 +136,47 @@
         };
 
         // =========================================================================
-        // 2. DADOS INICIAIS PADRÃO
+        // 2. ESTRUTURA DE DADOS PADRÃO (CLÍNICA + CONTROLE SAAS DO DESENVOLVEDOR)
         // =========================================================================
+        function getDefaultMasterSaasData() {
+            return {
+                devName: "Rafael Laudelino — Software & Sistemas SaaS",
+                devPhone: "48999999999",
+                devPixKey: "rafaellaudelino1@gmail.com",
+                paymentMethods: [
+                    "PIX Mensal",
+                    "Cartão de Crédito Recorrente",
+                    "Boleto Bancário Mensal",
+                    "PIX Anual (Com Desconto)",
+                    "Transferência / TED"
+                ],
+                defaultPlans: [
+                    { name: "Plano Essencial Fisio", price: 99.90 },
+                    { name: "Plano Pro Completo (Com Financeiro & Equipe)", price: 149.90 },
+                    { name: "Plano Clínicas Premium Multi-Fisio", price: 249.90 }
+                ],
+                billingHistory: [
+                    { id: 9001, date: "2026-10-05", storeSlug: "demo", clinicName: "Alessandra Medeiros", ownerName: "Dra. Alessandra Medeiros", planName: "Plano Pro Completo", method: "PIX Mensal", amount: 149.90, status: "Pago", notes: "Mensalidade Outubro/2026" }
+                ],
+                devExpenses: [
+                    { id: 9501, date: "2026-10-01", desc: "Infraestrutura Cloud / Domínios", amount: 45.00, category: "Servidor" }
+                ]
+            };
+        }
+
         function getDefaultData(slug) {
             const today = new Date().toISOString().split('T')[0];
+            const nextMonth = new Date();
+            nextMonth.setMonth(nextMonth.getMonth() + 1);
+            const nextMonthStr = nextMonth.toISOString().split('T')[0];
+
             return {
                 config: {
                     name: slug === 'demo' ? "Alessandra Medeiros" : `Clínica ${slug.toUpperCase()}`,
+                    ownerName: slug === 'demo' ? "Dra. Alessandra Medeiros" : `Proprietário ${slug}`,
                     subtitle: "Fisioterapeuta Pediátrica & Reabilitação Integrada",
                     crefito: "CREFITO-10 / 123456-F",
-                    cnpj: "00.000.000/0001-00",
+                    cnpj: "12.345.678/0001-99",
                     slogan: "Atendimento humanizado e especializado no desenvolvimento motor infantil e reabilitação.",
                     specialties: [
                         "Fisioterapia Pediátrica",
@@ -174,6 +203,26 @@
                         showFinancial: true,
                         showHomework: true,
                         allowPrintMirror: true
+                    },
+                    // ==============================================================
+                    // CONTROLE SOBERANO DO DESENVOLVEDOR (SOBRESCREVE O PROPRIETÁRIO)
+                    // ==============================================================
+                    saasSubscription: {
+                        planName: "Plano Pro Completo",
+                        planValue: 149.90,
+                        billingCycle: "Mensal",
+                        paymentMethod: "PIX Mensal",
+                        dueDate: nextMonthStr,
+                        status: "Ativo", // Ativo | Pendente | Atrasado | Bloqueado
+                        notes: "Cliente desde Outubro/2026"
+                    },
+                    masterAllowedScreens: {
+                        agenda: true,
+                        patients: true,
+                        evolutions: true,
+                        finance: true,
+                        staff: true,
+                        settings: true
                     }
                 },
                 patients: [
@@ -258,31 +307,42 @@
         }
 
         let dbData = getDefaultData(storeId);
+        let masterSaasData = getDefaultMasterSaasData();
+        let allClinicsList = []; // Lista carregada do Supabase [{ store_id, data, updated_at }]
         let currentSession = null; // { role: 'owner' | 'patient' | 'master', user: {...} }
 
+        // Estados de Navegação
         let ownerTab = 'agenda';
         let agendaViewMode = 'week';
         let agendaBaseDate = new Date().toISOString().split('T')[0];
         let selectedPatientIdForDetail = null;
         let financeFilterPatientId = 'all';
 
+        // Estados do Painel Master do Desenvolvedor
+        let masterTab = 'clinics'; // clinics | saas_finance | payment_methods
+        let masterSearchQuery = '';
+        let masterStatusFilter = 'all';
+
         // =========================================================================
-        // 3. INTEGRAÇÃO SUPABASE + FALLBACK LOCALSTORAGE
+        // 3. INTEGRAÇÃO SUPABASE + GARANTIA DE INTEGRIDADE
         // =========================================================================
-        function ensureDataIntegrity(raw) {
-            const def = getDefaultData(storeId);
+        function ensureDataIntegrity(raw, slugRef = storeId) {
+            const def = getDefaultData(slugRef);
             if (!raw || typeof raw !== 'object') return def;
             return {
                 config: {
                     ...def.config,
                     ...(raw.config || {}),
+                    ownerName: raw.config?.ownerName || raw.config?.name || def.config.ownerName,
                     logoUrl: raw.config?.logoUrl || def.config.logoUrl,
                     specialties: Array.isArray(raw.config?.specialties)
                         ? raw.config.specialties
                         : (typeof raw.config?.specialties === 'string'
                             ? raw.config.specialties.split(/[•,]/).map(s=>s.trim()).filter(Boolean)
                             : def.config.specialties),
-                    patientPermissions: { ...def.config.patientPermissions, ...(raw.config?.patientPermissions || {}) }
+                    patientPermissions: { ...def.config.patientPermissions, ...(raw.config?.patientPermissions || {}) },
+                    saasSubscription: { ...def.config.saasSubscription, ...(raw.config?.saasSubscription || {}) },
+                    masterAllowedScreens: { ...def.config.masterAllowedScreens, ...(raw.config?.masterAllowedScreens || {}) }
                 },
                 patients: Array.isArray(raw.patients) ? raw.patients : def.patients,
                 appointments: Array.isArray(raw.appointments) ? raw.appointments : def.appointments,
@@ -292,10 +352,23 @@
             };
         }
 
+        function ensureMasterIntegrity(raw) {
+            const def = getDefaultMasterSaasData();
+            if (!raw || typeof raw !== 'object') return def;
+            return {
+                ...def,
+                ...raw,
+                paymentMethods: Array.isArray(raw.paymentMethods) && raw.paymentMethods.length > 0 ? raw.paymentMethods : def.paymentMethods,
+                defaultPlans: Array.isArray(raw.defaultPlans) ? raw.defaultPlans : def.defaultPlans,
+                billingHistory: Array.isArray(raw.billingHistory) ? raw.billingHistory : def.billingHistory,
+                devExpenses: Array.isArray(raw.devExpenses) ? raw.devExpenses : def.devExpenses
+            };
+        }
+
         async function loadClinicData() {
-            const localRaw = localStorage.getItem(`fisio_v4_${storeId}`);
+            const localRaw = localStorage.getItem(`fisio_v5_${storeId}`);
             if (localRaw) {
-                try { dbData = ensureDataIntegrity(JSON.parse(localRaw)); } catch(e) {}
+                try { dbData = ensureDataIntegrity(JSON.parse(localRaw), storeId); } catch(e) {}
             }
             applyThemeAndColors();
             renderApp();
@@ -307,8 +380,8 @@
                 if (res.ok) {
                     const rows = await res.json();
                     if (rows && rows.length > 0 && rows[0].data) {
-                        dbData = ensureDataIntegrity(rows[0].data);
-                        localStorage.setItem(`fisio_v4_${storeId}`, JSON.stringify(dbData));
+                        dbData = ensureDataIntegrity(rows[0].data, storeId);
+                        localStorage.setItem(`fisio_v5_${storeId}`, JSON.stringify(dbData));
                     } else {
                         await saveClinicData();
                     }
@@ -321,9 +394,9 @@
             renderApp();
         }
 
-        async function saveClinicData() {
-            localStorage.setItem(`fisio_v4_${storeId}`, JSON.stringify(dbData));
-            applyThemeAndColors();
+        async function saveClinicData(customSlug = storeId, customData = dbData) {
+            localStorage.setItem(`fisio_v5_${customSlug}`, JSON.stringify(customData));
+            if (customSlug === storeId) applyThemeAndColors();
             try {
                 await fetch(`${SUPABASE_URL}/rest/v1/fisio_data`, {
                     method: 'POST',
@@ -334,8 +407,8 @@
                         'Prefer': 'resolution=merge-duplicates'
                     },
                     body: JSON.stringify({
-                        store_id: storeId,
-                        data: dbData,
+                        store_id: customSlug,
+                        data: customData,
                         updated_at: new Date().toISOString()
                     })
                 });
@@ -343,6 +416,51 @@
             } catch (err) {
                 document.getElementById('sync-dot').className = "w-2 h-2 rounded-full bg-amber-500";
             }
+        }
+
+        // Busca TODAS as clínicas do Supabase + configurações do Desenvolvedor Master
+        async function loadAllClinicsForMaster() {
+            const localMaster = localStorage.getItem(`fisio_v5_${MASTER_CONFIG_ID}`);
+            if (localMaster) {
+                try { masterSaasData = ensureMasterIntegrity(JSON.parse(localMaster)); } catch(e) {}
+            }
+            try {
+                const res = await fetch(`${SUPABASE_URL}/rest/v1/fisio_data?select=*&order=updated_at.desc`, {
+                    headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` }
+                });
+                if (res.ok) {
+                    const rows = await res.json();
+                    const masterRow = rows.find(r => r.store_id === MASTER_CONFIG_ID);
+                    if (masterRow && masterRow.data) {
+                        masterSaasData = ensureMasterIntegrity(masterRow.data);
+                        localStorage.setItem(`fisio_v5_${MASTER_CONFIG_ID}`, JSON.stringify(masterSaasData));
+                    } else {
+                        await saveMasterSaasData();
+                    }
+
+                    allClinicsList = rows
+                        .filter(r => r.store_id !== MASTER_CONFIG_ID)
+                        .map(r => ({
+                            store_id: r.store_id,
+                            updated_at: r.updated_at,
+                            data: ensureDataIntegrity(r.data, r.store_id)
+                        }));
+
+                    // Se não houver nenhuma clínica no banco ainda, inclui a atual
+                    if (allClinicsList.length === 0) {
+                        allClinicsList = [{ store_id: storeId, updated_at: new Date().toISOString(), data: dbData }];
+                    }
+                }
+            } catch (err) {
+                console.warn("Erro ao buscar todas as clínicas no Supabase:", err);
+                allClinicsList = [{ store_id: storeId, updated_at: new Date().toISOString(), data: dbData }];
+            }
+            renderApp();
+        }
+
+        async function saveMasterSaasData() {
+            localStorage.setItem(`fisio_v5_${MASTER_CONFIG_ID}`, JSON.stringify(masterSaasData));
+            await saveClinicData(MASTER_CONFIG_ID, masterSaasData);
         }
 
         function applyThemeAndColors() {
@@ -394,11 +512,40 @@
             };
         }
 
+        // Retorna as abas permitidas pelo Desenvolvedor Master para o Proprietário
+        function getAllowedOwnerTabs() {
+            const allowed = dbData.config.masterAllowedScreens || {
+                agenda: true, patients: true, evolutions: true, finance: true, staff: true, settings: true
+            };
+            const allItems = [
+                { id: 'agenda',     icon: 'fa-calendar-days', label: 'Agenda & KPIs' },
+                { id: 'patients',   icon: 'fa-users',         label: 'Pacientes & Senhas' },
+                { id: 'evolutions', icon: 'fa-file-medical',  label: 'Evoluções & Espelhos' },
+                { id: 'finance',    icon: 'fa-sack-dollar',   label: 'Finanças & Gastos' },
+                { id: 'staff',      icon: 'fa-user-nurse',    label: 'Funcionários' },
+                { id: 'settings',   icon: 'fa-sliders',       label: 'Logo, Cores & Site' }
+            ];
+            return allItems.filter(item => {
+                // O Desenvolvedor Master tem soberania total sobre as telas:
+                if (allowed[item.id] === false) return false;
+                // Se o Master liberou 'staff', verifica também se está habilitado na clínica:
+                if (item.id === 'staff' && !dbData.config.enableStaffModule) return false;
+                return true;
+            });
+        }
+
         // =========================================================================
         // 4. ROTEADOR PRINCIPAL
         // =========================================================================
         function renderApp() {
             const app = document.getElementById('app');
+
+            // Verifica se a clínica foi Bloqueada pelo Desenvolvedor Master (exceto se o próprio Master estiver logado)
+            if (dbData.config.saasSubscription?.status === 'Bloqueado' && currentSession?.role !== 'master') {
+                app.innerHTML = renderSuspendedClinicScreen();
+                return;
+            }
+
             if (!currentSession) {
                 app.innerHTML = renderSplitLandingScreen();
                 return;
@@ -417,8 +564,25 @@
             }
         }
 
+        function renderSuspendedClinicScreen() {
+            return `
+                <div class="flex-1 flex flex-col items-center justify-center p-6 text-center bg-slate-950 text-white">
+                    <div class="w-20 h-20 rounded-3xl bg-rose-500/15 border border-rose-500/30 text-rose-400 flex items-center justify-center text-3xl mb-5">
+                        <i class="fa-solid fa-lock"></i>
+                    </div>
+                    <h1 class="text-2xl font-extrabold">Sistema Temporariamente Suspenso</h1>
+                    <p class="text-xs text-slate-400 max-w-md mt-2 leading-relaxed">
+                        O acesso da clínica <b>${dbData.config.name}</b> encontra-se temporariamente indisponível. Entre em contato com o suporte administrativo do sistema para regularização.
+                    </p>
+                    <button onclick="openOwnerLoginModal()" class="mt-6 px-5 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-bold text-slate-300 border border-slate-700">
+                        Acesso Desenvolvedor / Suporte
+                    </button>
+                </div>
+            `;
+        }
+
         // =========================================================================
-        // 5. TELA INICIAL MOBILE-FIRST LUXURY (LOGO EM CIMA + LOGIN EMBAIXO NO CELULAR)
+        // 5. TELA INICIAL MOBILE-FIRST LUXURY
         // =========================================================================
         function renderSplitLandingScreen() {
             const cfg = dbData.config;
@@ -429,19 +593,13 @@
 
             return `
                 <div class="flex-1 flex flex-col lg:flex-row w-full">
-                    
-                    <!-- SEÇÃO DA LOGO & IDENTIDADE DA CLÍNICA (Fica no TOPO no Celular e na ESQUERDA no Computador) -->
                     <section class="w-full lg:w-7/12 relative overflow-hidden bg-slate-900 text-white px-5 pt-7 pb-12 sm:p-10 lg:p-14 flex flex-col justify-between shrink-0">
-                        <!-- Imagem de Fundo Suave + Gradiente -->
                         <div class="absolute inset-0 z-0 opacity-25 bg-cover bg-center" style="background-image: url('${cfg.coverUrl}')"></div>
                         <div class="absolute inset-0 z-0 bg-gradient-to-b lg:bg-gradient-to-br from-slate-950/90 via-slate-900/90 to-slate-950"></div>
-                        
-                        <!-- Brilho Decorativo no Topo Mobile -->
                         <div class="absolute -top-24 left-1/2 -translate-x-1/2 w-80 h-80 rounded-full blur-3xl opacity-25 pointer-events-none" style="background: var(--brand-500);"></div>
 
-                        <!-- Barra de Status / Horário e CREFITO -->
                         <div class="relative z-10 flex items-center justify-between gap-2 mb-6 lg:mb-0">
-                            <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 border border-white/15 backdrop-blur-md text-[11px] font-semibold text-slate-200 max-w-[70%] sm:max-w-none truncate">
+                            <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 border border-white/15 backdrop-blur-md text-[11px] font-semibold text-slate-200 max-w-[68%] sm:max-w-none truncate">
                                 <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse shrink-0"></span>
                                 <span class="truncate">${cfg.workingHours}</span>
                             </div>
@@ -450,9 +608,7 @@
                             </span>
                         </div>
 
-                        <!-- Bloco Central: Logo em Evidência + Nome + Slogan -->
                         <div class="relative z-10 my-auto flex flex-col items-center text-center lg:items-start lg:text-left">
-                            <!-- Moldura Premium da Logo -->
                             <div class="relative group mb-4 sm:mb-6">
                                 <div class="absolute -inset-1 rounded-3xl opacity-50 blur-md transition" style="background: linear-gradient(135deg, var(--brand-500), transparent);"></div>
                                 <div class="relative w-36 h-32 sm:w-44 sm:h-36 rounded-3xl bg-white p-3 shadow-2xl flex items-center justify-center border-2 border-white/40 overflow-hidden">
@@ -460,7 +616,6 @@
                                 </div>
                             </div>
 
-                            <!-- Subtítulo e Nome da Clínica -->
                             <span class="inline-block px-3 py-1 rounded-full bg-brand-soft border border-amber-500/30 text-brand text-[11px] font-extrabold uppercase tracking-widest mb-2">
                                 ${cfg.subtitle}
                             </span>
@@ -471,7 +626,6 @@
                                 ${cfg.slogan}
                             </p>
 
-                            <!-- Carrossel / Pílulas de Especialidades -->
                             <div class="w-full mt-5">
                                 <p class="text-[10px] uppercase tracking-widest text-slate-400 font-bold mb-2.5">Especialidades & Áreas de Cuidado</p>
                                 <div class="flex flex-wrap justify-center lg:justify-start gap-1.5 sm:gap-2">
@@ -484,7 +638,6 @@
                             </div>
                         </div>
 
-                        <!-- Endereço e Contato Rápido -->
                         <div class="relative z-10 mt-6 pt-4 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-slate-300">
                             <div class="flex items-center gap-1.5 text-center sm:text-left">
                                 <i class="fa-solid fa-location-dot text-brand"></i>
@@ -496,11 +649,8 @@
                         </div>
                     </section>
 
-                    <!-- SEÇÃO DE LOGIN DO PACIENTE (Fica EMBAIXO no Celular com efeito folha arredondada e na DIREITA no Computador) -->
                     <section class="w-full lg:w-5/12 bg-slate-100 dark:bg-slate-950 flex flex-col justify-center items-center px-4 pb-8 pt-0 sm:p-8 lg:p-12 -mt-6 lg:mt-0 relative z-20">
                         <div class="w-full max-w-md bg-white dark:bg-slate-900 border border-slate-200/90 dark:border-slate-800 rounded-3xl p-6 sm:p-8 shadow-2xl">
-                            
-                            <!-- Cabeçalho do Card de Login -->
                             <div class="flex items-center justify-between pb-4 mb-5 border-b border-slate-100 dark:border-slate-800">
                                 <div>
                                     <span class="text-[10px] font-extrabold uppercase tracking-widest text-brand block">Acesso Individual</span>
@@ -515,7 +665,6 @@
                                 Entre com o seu <b>WhatsApp ou CPF</b> e a <b>Senha</b> enviada pela clínica para visualizar sua agenda, evoluções e recomendações.
                             </p>
 
-                            <!-- Formulário de Login do Paciente -->
                             <form onsubmit="handlePatientLogin(event)" class="space-y-4">
                                 <div>
                                     <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">WhatsApp (com DDD) ou CPF</label>
@@ -546,7 +695,6 @@
                                 </button>
                             </form>
 
-                            <!-- Ações Secundárias (Demo + Solicitar Acesso WhatsApp) -->
                             <div class="mt-6 pt-5 border-t border-slate-100 dark:border-slate-800 space-y-2.5">
                                 <button onclick="loginDemoPatient()" class="w-full bg-slate-100 dark:bg-slate-800/90 hover:bg-slate-200 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200 py-3 px-4 rounded-2xl text-xs font-bold transition flex items-center justify-center gap-2 border border-slate-200/80 dark:border-slate-700">
                                     <i class="fa-solid fa-bolt text-amber-500"></i> Demonstração Rápida: Paciente Lucas Gabriel
@@ -605,11 +753,12 @@
         }
 
         // =========================================================================
-        // 6. PORTAL DO PACIENTE LOGADO (RESPONSIVO MOBILE & DESKTOP)
+        // 6. PORTAL DO PACIENTE LOGADO
         // =========================================================================
         function renderPatientPortalScreen() {
             const pat = dbData.patients.find(p => p.id === currentSession.user.id) || currentSession.user;
             const perms = dbData.config.patientPermissions;
+            const masterAllowed = dbData.config.masterAllowedScreens || {};
             const myAppts = dbData.appointments.filter(a => a.patientId === pat.id).sort((a,b) => b.date.localeCompare(a.date));
             const myRecords = dbData.records.filter(r => r.patientId === pat.id).sort((a,b) => b.date.localeCompare(a.date));
             const myFinances = dbData.finances.filter(f => f.patientId === pat.id);
@@ -619,7 +768,6 @@
 
             return `
                 <div class="flex-1 flex flex-col bg-slate-50 dark:bg-slate-950">
-                    <!-- Topbar Mobile-First do Paciente -->
                     <header class="bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 px-4 sm:px-6 py-3.5 sticky top-0 z-30 shadow-sm">
                         <div class="max-w-6xl mx-auto flex items-center justify-between gap-3">
                             <div class="flex items-center gap-3 min-w-0">
@@ -631,7 +779,7 @@
                                 </div>
                             </div>
                             <div class="flex items-center gap-2 shrink-0">
-                                ${perms.allowPrintMirror ? `
+                                ${perms.allowPrintMirror && masterAllowed.evolutions !== false ? `
                                 <button onclick="printPatientMirror(${pat.id})" class="bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 text-slate-700 dark:text-slate-200 text-xs font-bold px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 flex items-center gap-1.5">
                                     <i class="fa-solid fa-print text-brand"></i> <span class="hidden sm:inline">Imprimir Espelho</span>
                                 </button>` : ''}
@@ -642,9 +790,7 @@
                         </div>
                     </header>
 
-                    <!-- Conteúdo do Paciente -->
                     <main class="max-w-6xl w-full mx-auto p-4 sm:p-6 space-y-5 flex-1">
-                        <!-- Resumo em Cards -->
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                             <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 sm:p-5">
                                 <span class="text-[11px] text-slate-400 font-bold uppercase">Diagnóstico & Plano</span>
@@ -671,9 +817,8 @@
                         </div>
 
                         <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
-                            <!-- Evoluções Clínicas e Orientações para Casa -->
                             <div class="lg:col-span-2 space-y-5">
-                                ${perms.showSoapRecords ? `
+                                ${perms.showSoapRecords && masterAllowed.evolutions !== false ? `
                                 <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5">
                                     <div class="flex items-center justify-between mb-4">
                                         <h3 class="text-sm sm:text-base font-extrabold text-slate-900 dark:text-white flex items-center gap-2">
@@ -710,7 +855,6 @@
                                 </div>` : ''}
                             </div>
 
-                            <!-- Coluna Direita: Agenda e Pagamentos -->
                             <div class="space-y-5">
                                 <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5">
                                     <h3 class="text-sm sm:text-base font-extrabold text-slate-900 dark:text-white mb-3.5 flex items-center gap-2">
@@ -724,13 +868,18 @@
                                                     <p class="text-xs font-extrabold text-slate-900 dark:text-white">${formatDateBR(a.date)} às ${a.time}</p>
                                                     <p class="text-[11px] text-slate-500">${a.serviceName}</p>
                                                 </div>
-                                                <span class="px-2.5 py-1 rounded-full text-[10px] font-bold ${ a.status === 'Realizado' ? 'bg-emerald-500/15 text-emerald-600 dark:text-emerald-400' : a.status === 'Confirmado' ? 'bg-sky-500/15 text-sky-600 dark:text-sky-400' : a.status === 'Faltou/Cancelado' ? 'bg-rose-500/15 text-rose-500' : 'bg-amber-500/15 text-amber-600' }">${a.status}</span>
+                                                <span class="px-2.5 py-1 rounded-full text-[10px] font-bold ${
+                                                    a.status === 'Realizado' ? 'bg-emerald-500/15 text-emerald-600 dark:text-emerald-400' :
+                                                    a.status === 'Confirmado' ? 'bg-sky-500/15 text-sky-600 dark:text-sky-400' :
+                                                    a.status === 'Faltou/Cancelado' ? 'bg-rose-500/15 text-rose-500' :
+                                                    'bg-amber-500/15 text-amber-600'
+                                                }">${a.status}</span>
                                             </div>
                                         `).join('')}
                                     </div>
                                 </div>
 
-                                ${perms.showFinancial ? `
+                                ${perms.showFinancial && masterAllowed.finance !== false ? `
                                 <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5">
                                     <h3 class="text-sm sm:text-base font-extrabold text-slate-900 dark:text-white mb-3 flex items-center gap-2">
                                         <i class="fa-solid fa-wallet text-brand"></i> Resumo Financeiro
@@ -768,22 +917,19 @@
         }
 
         // =========================================================================
-        // 7. PAINEL DO PROPRIETÁRIO / FISIOTERAPEUTA
+        // 7. PAINEL DO PROPRIETÁRIO / FISIOTERAPEUTA (OBEDECE AO BLOQUEIO DO MASTER)
         // =========================================================================
         function renderOwnerDashboardScreen() {
             const cfg = dbData.config;
-            const navItems = [
-                { id: 'agenda',     icon: 'fa-calendar-days', label: 'Agenda & KPIs' },
-                { id: 'patients',   icon: 'fa-users',         label: 'Pacientes & Senhas' },
-                { id: 'evolutions', icon: 'fa-file-medical',  label: 'Evoluções & Espelhos' },
-                { id: 'finance',    icon: 'fa-sack-dollar',   label: 'Finanças & Gastos' },
-                ...(cfg.enableStaffModule ? [{ id: 'staff', icon: 'fa-user-nurse', label: 'Funcionários' }] : []),
-                { id: 'settings',   icon: 'fa-sliders',       label: 'Logo, Cores & Site' }
-            ];
+            const navItems = getAllowedOwnerTabs();
+
+            // Se a aba atual foi bloqueada pelo Desenvolvedor Master, redireciona para a primeira liberada
+            if (navItems.length > 0 && !navItems.some(i => i.id === ownerTab)) {
+                ownerTab = navItems[0].id;
+            }
 
             return `
                 <div class="flex-1 flex flex-col lg:flex-row bg-slate-100 dark:bg-slate-950">
-                    <!-- Menu Lateral / Barra Mobile -->
                     <aside class="w-full lg:w-64 bg-white dark:bg-slate-900 border-b lg:border-b-0 lg:border-r border-slate-200 dark:border-slate-800 flex flex-col shrink-0 sticky top-0 z-30 lg:static">
                         <div class="p-4 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between gap-3">
                             <div class="flex items-center gap-3 min-w-0">
@@ -806,6 +952,10 @@
                         </nav>
 
                         <div class="hidden lg:block mt-auto p-4 border-t border-slate-200 dark:border-slate-800 space-y-2">
+                            ${currentSession.impersonatedByMaster ? `
+                            <button onclick="returnToMasterFromImpersonation()" class="w-full bg-amber-500 hover:bg-amber-400 text-slate-950 text-xs font-extrabold py-2.5 px-3 rounded-xl transition flex items-center justify-center gap-2 shadow">
+                                <i class="fa-solid fa-user-secret"></i> Voltar ao Painel Master
+                            </button>` : ''}
                             <button onclick="printGeneralClinicMirror()" class="w-full bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 text-slate-700 dark:text-slate-200 text-xs font-bold py-2.5 px-3 rounded-xl transition flex items-center justify-center gap-2">
                                 <i class="fa-solid fa-print text-brand"></i> Emitir Espelho Geral
                             </button>
@@ -815,15 +965,21 @@
                         </div>
                     </aside>
 
-                    <!-- Conteúdo Principal -->
                     <main class="flex-1 p-4 sm:p-6 lg:p-8 max-w-full overflow-x-hidden">
-                        ${renderOwnerTabBody()}
+                        ${currentSession.impersonatedByMaster ? `
+                        <div class="mb-4 p-3 rounded-2xl bg-amber-500/15 border border-amber-500/40 flex flex-wrap items-center justify-between gap-2 text-xs">
+                            <span class="font-bold text-amber-600 dark:text-amber-400"><i class="fa-solid fa-shield-halved mr-1"></i> Modo Desenvolvedor Ativo: Você está acessando e gerenciando a clínica <b>${cfg.name} (?clinica=${storeId})</b>.</span>
+                            <button onclick="returnToMasterFromImpersonation()" class="px-3 py-1 rounded-lg bg-amber-500 text-slate-950 font-extrabold">Voltar para Todas as Clínicas</button>
+                        </div>` : ''}
+                        ${navItems.length === 0 ? `<div class="p-8 text-center bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 text-sm font-bold text-rose-500">Nenhuma tela foi habilitada pelo Desenvolvedor para este acesso.</div>` : renderOwnerTabBody()}
                     </main>
                 </div>
             `;
         }
 
         function renderOwnerTabBody() {
+            const allowed = dbData.config.masterAllowedScreens || {};
+            if (allowed[ownerTab] === false) return '';
             if (ownerTab === 'agenda') return renderOwnerAgendaView();
             if (ownerTab === 'patients') return renderOwnerPatientsView();
             if (ownerTab === 'evolutions') return renderOwnerEvolutionsView();
@@ -834,7 +990,7 @@
         }
 
         // =========================================================================
-        // 7.1 AGENDA (DIÁRIO, SEMANAL, MENSAL) + DASHBOARD DINÂMICO
+        // 7.1 A 7.6 TELAS DO PROPRIETÁRIO
         // =========================================================================
         function filterAppointmentsByMode() {
             if (agendaViewMode === 'day') return dbData.appointments.filter(a => a.date === agendaBaseDate);
@@ -894,7 +1050,6 @@
                         </div>
                     </div>
 
-                    <!-- Seletor de Data -->
                     <div class="flex flex-wrap items-center justify-between gap-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 px-4 py-3 rounded-2xl">
                         <div class="flex items-center gap-2">
                             <button onclick="changeAgendaDateOffset(-1)" class="w-8 h-8 rounded-lg bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-xs"><i class="fa-solid fa-chevron-left"></i></button>
@@ -907,7 +1062,6 @@
                         </div>
                     </div>
 
-                    <!-- KPIs que mudam conforme Dia/Semana/Mês -->
                     <div class="grid grid-cols-2 lg:grid-cols-5 gap-3 sm:gap-4">
                         <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-4">
                             <span class="text-[10px] font-bold text-slate-400 uppercase">Total Período</span>
@@ -931,7 +1085,6 @@
                         </div>
                     </div>
 
-                    <!-- Lista de Atendimentos -->
                     <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden shadow-sm">
                         <div class="p-4 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
                             <h3 class="text-xs sm:text-sm font-extrabold text-slate-900 dark:text-white">Atendimentos (${filtered.length})</h3>
@@ -976,9 +1129,6 @@
             `;
         }
 
-        // =========================================================================
-        // 7.2 PACIENTES & ENVIO DE ACESSO WHATSAPP
-        // =========================================================================
         function renderOwnerPatientsView() {
             return `
                 <div class="space-y-5">
@@ -1038,9 +1188,6 @@
             `;
         }
 
-        // =========================================================================
-        // 7.3 EVOLUÇÕES & ESPELHOS
-        // =========================================================================
         function renderOwnerEvolutionsView() {
             const patFilter = selectedPatientIdForDetail ? Number(selectedPatientIdForDetail) : null;
             const list = patFilter ? dbData.records.filter(r => r.patientId === patFilter) : dbData.records;
@@ -1105,9 +1252,6 @@
             `;
         }
 
-        // =========================================================================
-        // 7.4 FINANCEIRO COMPLETO
-        // =========================================================================
         function renderOwnerFinanceView() {
             const list = financeFilterPatientId === 'all'
                 ? dbData.finances
@@ -1116,7 +1260,8 @@
             const receivedTotal = list.filter(f => f.type === 'receita' && f.status === 'Recebido').reduce((a,b)=>a+Number(b.amount),0);
             const pendingReceivable = list.filter(f => f.type === 'receita' && f.status === 'Pendente').reduce((a,b)=>a+Number(b.amount),0);
             const expensesTotal = list.filter(f => f.type === 'despesa').reduce((a,b)=>a+Number(b.amount),0);
-            const staffMonthlyCost = dbData.config.enableStaffModule
+            const staffAllowed = dbData.config.masterAllowedScreens?.staff !== false && dbData.config.enableStaffModule;
+            const staffMonthlyCost = staffAllowed
                 ? dbData.staff.reduce((a,s) => a + Number(s.baseSalary || 0) + Number(s.extraCosts || 0), 0)
                 : 0;
             const netBalance = receivedTotal - expensesTotal - (financeFilterPatientId === 'all' ? staffMonthlyCost : 0);
@@ -1148,7 +1293,7 @@
                             <h3 class="text-xl sm:text-2xl font-extrabold text-amber-500 mt-1">${formatBRL(pendingReceivable)}</h3>
                         </div>
                         <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-4">
-                            <span class="text-[10px] font-bold text-rose-500 uppercase">Gastos + Folha</span>
+                            <span class="text-[10px] font-bold text-rose-500 uppercase">Gastos ${staffAllowed ? '+ Folha' : ''}</span>
                             <h3 class="text-xl sm:text-2xl font-extrabold text-rose-500 mt-1">${formatBRL(expensesTotal + (financeFilterPatientId === 'all' ? staffMonthlyCost : 0))}</h3>
                         </div>
                         <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-4">
@@ -1184,9 +1329,6 @@
             `;
         }
 
-        // =========================================================================
-        // 7.5 FUNCIONÁRIOS
-        // =========================================================================
         function renderOwnerStaffView() {
             const totalPayroll = dbData.staff.reduce((acc, s) => acc + Number(s.baseSalary || 0) + Number(s.extraCosts || 0), 0);
             return `
@@ -1229,12 +1371,11 @@
             `;
         }
 
-        // =========================================================================
-        // 7.6 CONFIGURAÇÕES DE LOGO, TEMAS E PERMISSÕES
-        // =========================================================================
         function renderOwnerSettingsView() {
             const cfg = dbData.config;
             const perms = cfg.patientPermissions;
+            const masterAllowed = cfg.masterAllowedScreens || {};
+
             return `
                 <form onsubmit="saveAllClinicSettings(event)" class="space-y-6 max-w-4xl">
                     <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-5 sm:p-6 rounded-2xl space-y-5">
@@ -1310,8 +1451,9 @@
                     </div>
 
                     <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-5 sm:p-6 rounded-2xl space-y-4">
-                        <h3 class="text-sm sm:text-base font-extrabold text-slate-900 dark:text-white">Permissões do Portal do Paciente & Módulos</h3>
+                        <h3 class="text-sm sm:text-base font-extrabold text-slate-900 dark:text-white">Permissões do Portal do Paciente</h3>
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                            ${masterAllowed.evolutions !== false ? `
                             <label class="flex items-center gap-3 p-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800">
                                 <input type="checkbox" id="perm-soap" ${perms.showSoapRecords ? 'checked' : ''} class="w-4 h-4">
                                 <span>Paciente vê Evoluções Clínicas</span>
@@ -1321,21 +1463,26 @@
                                 <span>Paciente vê Escala EVA</span>
                             </label>
                             <label class="flex items-center gap-3 p-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800">
-                                <input type="checkbox" id="perm-fin" ${perms.showFinancial ? 'checked' : ''} class="w-4 h-4">
-                                <span>Paciente vê Financeiro</span>
-                            </label>
-                            <label class="flex items-center gap-3 p-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800">
                                 <input type="checkbox" id="perm-home" ${perms.showHomework ? 'checked' : ''} class="w-4 h-4">
                                 <span>Paciente vê Exercícios de Casa</span>
                             </label>
                             <label class="flex items-center gap-3 p-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800">
                                 <input type="checkbox" id="perm-print" ${perms.allowPrintMirror ? 'checked' : ''} class="w-4 h-4">
                                 <span>Paciente pode Imprimir Espelho</span>
-                            </label>
+                            </label>` : ''}
+
+                            ${masterAllowed.finance !== false ? `
+                            <label class="flex items-center gap-3 p-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800">
+                                <input type="checkbox" id="perm-fin" ${perms.showFinancial ? 'checked' : ''} class="w-4 h-4">
+                                <span>Paciente vê Financeiro</span>
+                            </label>` : ''}
+
+                            <!-- Se o Desenvolvedor Master bloqueou Funcionários, o proprietário NÃO vê nem controla este switch -->
+                            ${masterAllowed.staff !== false ? `
                             <label class="flex items-center gap-3 p-3 rounded-xl bg-brand-soft border border-amber-500/30">
                                 <input type="checkbox" id="cfg-staff-module" ${cfg.enableStaffModule ? 'checked' : ''} class="w-4 h-4">
                                 <span class="font-bold">Habilitar Módulo de Funcionários</span>
-                            </label>
+                            </label>` : ''}
                         </div>
                         <button type="submit" class="w-full sm:w-auto bg-brand-gradient text-white text-xs font-bold px-6 py-3.5 rounded-xl shadow">Salvar Todas as Configurações</button>
                     </div>
@@ -1391,15 +1538,23 @@
             dbData.config.workingHours = document.getElementById('cfg-hours').value.trim();
             dbData.config.themeColor = document.getElementById('cfg-theme').value;
             dbData.config.darkMode = document.getElementById('cfg-darkmode').value === 'true';
-            dbData.config.enableStaffModule = document.getElementById('cfg-staff-module').checked;
 
-            dbData.config.patientPermissions = {
-                showSoapRecords: document.getElementById('perm-soap').checked,
-                showPainScale: document.getElementById('perm-eva').checked,
-                showFinancial: document.getElementById('perm-fin').checked,
-                showHomework: document.getElementById('perm-home').checked,
-                allowPrintMirror: document.getElementById('perm-print').checked
-            };
+            const staffCheckbox = document.getElementById('cfg-staff-module');
+            if (staffCheckbox && dbData.config.masterAllowedScreens?.staff !== false) {
+                dbData.config.enableStaffModule = staffCheckbox.checked;
+            }
+
+            const pSoap = document.getElementById('perm-soap');
+            const pEva  = document.getElementById('perm-eva');
+            const pFin  = document.getElementById('perm-fin');
+            const pHome = document.getElementById('perm-home');
+            const pPrt  = document.getElementById('perm-print');
+
+            if (pSoap) dbData.config.patientPermissions.showSoapRecords = pSoap.checked;
+            if (pEva)  dbData.config.patientPermissions.showPainScale = pEva.checked;
+            if (pFin)  dbData.config.patientPermissions.showFinancial = pFin.checked;
+            if (pHome) dbData.config.patientPermissions.showHomework = pHome.checked;
+            if (pPrt)  dbData.config.patientPermissions.allowPrintMirror = pPrt.checked;
 
             saveClinicData();
             alert("Personalizações salvas com sucesso!");
@@ -1407,7 +1562,830 @@
         }
 
         // =========================================================================
-        // 8. IMPRESSÃO DE ESPELHO INDIVIDUAL E GERAL
+        // 8. CENTRO DE COMANDO DO DESENVOLVEDOR MASTER (SAAS MULTI-CLÍNICAS)
+        // =========================================================================
+        function renderMasterDevScreen() {
+            const totalClinics = allClinicsList.length;
+            const activeClinics = allClinicsList.filter(c => c.data.config.saasSubscription?.status === 'Ativo').length;
+            const blockedClinics = allClinicsList.filter(c => c.data.config.saasSubscription?.status === 'Bloqueado' || c.data.config.saasSubscription?.status === 'Atrasado').length;
+            const mrrTotal = allClinicsList
+                .filter(c => c.data.config.saasSubscription?.status !== 'Bloqueado')
+                .reduce((acc, c) => acc + Number(c.data.config.saasSubscription?.planValue || 0), 0);
+
+            const totalReceivedSaas = masterSaasData.billingHistory
+                .filter(b => b.status === 'Pago')
+                .reduce((acc, b) => acc + Number(b.amount || 0), 0);
+            const totalDevExpenses = masterSaasData.devExpenses
+                .reduce((acc, d) => acc + Number(d.amount || 0), 0);
+
+            return `
+                <div class="flex-1 flex flex-col lg:flex-row bg-slate-950 text-slate-100 min-h-0">
+                    <!-- Menu Lateral do Desenvolvedor Master -->
+                    <aside class="w-full lg:w-68 bg-slate-900 border-b lg:border-b-0 lg:border-r border-slate-800 flex flex-col shrink-0">
+                        <div class="p-5 border-b border-slate-800 flex items-center justify-between">
+                            <div class="flex items-center gap-3">
+                                <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-amber-400 to-amber-600 text-slate-950 flex items-center justify-center font-extrabold text-xl shadow-lg">
+                                    <i class="fa-solid fa-code"></i>
+                                </div>
+                                <div>
+                                    <span class="text-[10px] font-extrabold uppercase tracking-widest text-amber-400 block">SaaS Master Admin</span>
+                                    <h2 class="text-sm font-extrabold text-white">Painel do Desenvolvedor</h2>
+                                </div>
+                            </div>
+                            <button onclick="logout()" class="lg:hidden px-3 py-1.5 rounded-xl bg-rose-500/15 text-rose-400 text-xs font-bold">Sair</button>
+                        </div>
+
+                        <nav class="flex lg:flex-col overflow-x-auto no-scrollbar p-3 gap-1.5 text-xs font-bold">
+                            <button onclick="masterTab='clinics'; renderApp();" class="flex items-center gap-3 px-4 py-3 rounded-xl whitespace-nowrap transition ${masterTab === 'clinics' ? 'bg-amber-500 text-slate-950 shadow-lg shadow-amber-500/20' : 'text-slate-400 hover:bg-slate-800 hover:text-white'}">
+                                <i class="fa-solid fa-hospital w-4 text-center"></i>
+                                <span>Clínicas, Proprietários & Telas (${totalClinics})</span>
+                            </button>
+                            <button onclick="masterTab='saas_finance'; renderApp();" class="flex items-center gap-3 px-4 py-3 rounded-xl whitespace-nowrap transition ${masterTab === 'saas_finance' ? 'bg-amber-500 text-slate-950 shadow-lg shadow-amber-500/20' : 'text-slate-400 hover:bg-slate-800 hover:text-white'}">
+                                <i class="fa-solid fa-chart-line w-4 text-center"></i>
+                                <span>Finanças SaaS & Mensalidades</span>
+                            </button>
+                            <button onclick="masterTab='payment_methods'; renderApp();" class="flex items-center gap-3 px-4 py-3 rounded-xl whitespace-nowrap transition ${masterTab === 'payment_methods' ? 'bg-amber-500 text-slate-950 shadow-lg shadow-amber-500/20' : 'text-slate-400 hover:bg-slate-800 hover:text-white'}">
+                                <i class="fa-solid fa-credit-card w-4 text-center"></i>
+                                <span>Métodos de Pagamento & Planos</span>
+                            </button>
+                        </nav>
+
+                        <div class="hidden lg:block mt-auto p-4 border-t border-slate-800 space-y-2">
+                            <button onclick="loadAllClinicsForMaster()" class="w-full bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold py-2.5 px-3 rounded-xl flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-rotate text-amber-400"></i> Sincronizar com Supabase
+                            </button>
+                            <button onclick="logout()" class="w-full bg-rose-500/15 hover:bg-rose-500/25 text-rose-400 text-xs font-bold py-2.5 px-3 rounded-xl flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-right-from-bracket"></i> Sair do Modo Master
+                            </button>
+                        </div>
+                    </aside>
+
+                    <!-- Conteúdo Principal do Desenvolvedor -->
+                    <main class="flex-1 p-4 sm:p-6 lg:p-8 overflow-y-auto space-y-6">
+                        <!-- KPIs Globais do Desenvolvedor -->
+                        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 sm:p-5">
+                                <span class="text-[10px] font-bold uppercase text-slate-400">Clínicas Cadastradas</span>
+                                <div class="flex items-baseline justify-between mt-1">
+                                    <h3 class="text-2xl font-extrabold text-white">${totalClinics}</h3>
+                                    <span class="text-xs font-bold text-emerald-400">${activeClinics} ativas</span>
+                                </div>
+                            </div>
+                            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 sm:p-5">
+                                <span class="text-[10px] font-bold uppercase text-amber-400">Receita Recorrente (MRR)</span>
+                                <h3 class="text-2xl font-extrabold text-amber-400 mt-1">${formatBRL(mrrTotal)}<span class="text-xs font-normal text-slate-400">/mês</span></h3>
+                            </div>
+                            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 sm:p-5">
+                                <span class="text-[10px] font-bold uppercase text-emerald-400">Total Recebido (Caixa Dev)</span>
+                                <h3 class="text-2xl font-extrabold text-emerald-400 mt-1">${formatBRL(totalReceivedSaas - totalDevExpenses)}</h3>
+                            </div>
+                            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 sm:p-5">
+                                <span class="text-[10px] font-bold uppercase text-rose-400">Atrasadas / Bloqueadas</span>
+                                <h3 class="text-2xl font-extrabold text-rose-400 mt-1">${blockedClinics}</h3>
+                            </div>
+                        </div>
+
+                        ${masterTab === 'clinics' ? renderMasterClinicsTab() : ''}
+                        ${masterTab === 'saas_finance' ? renderMasterFinanceTab() : ''}
+                        ${masterTab === 'payment_methods' ? renderMasterPaymentMethodsTab() : ''}
+                    </main>
+                </div>
+            `;
+        }
+
+        // =========================================================================
+        // 8.1 ABA MASTER: GESTÃO COMPLETA DE CLÍNICAS, PROPRIETÁRIOS E TELAS
+        // =========================================================================
+        function renderMasterClinicsTab() {
+            const filtered = allClinicsList.filter(item => {
+                const cfg = item.data.config;
+                const sub = cfg.saasSubscription || {};
+                const q = masterSearchQuery.toLowerCase();
+                const matchSearch = !q ||
+                    item.store_id.toLowerCase().includes(q) ||
+                    (cfg.name || '').toLowerCase().includes(q) ||
+                    (cfg.ownerName || '').toLowerCase().includes(q) ||
+                    (cfg.cnpj || '').toLowerCase().includes(q) ||
+                    (cfg.email || '').toLowerCase().includes(q);
+                const matchStatus = masterStatusFilter === 'all' || sub.status === masterStatusFilter;
+                return matchSearch && matchStatus;
+            });
+
+            const screenLabels = [
+                { key: 'agenda', label: 'Agenda' },
+                { key: 'patients', label: 'Pacientes' },
+                { key: 'evolutions', label: 'Evoluções' },
+                { key: 'finance', label: 'Financeiro' },
+                { key: 'staff', label: 'Funcionários' },
+                { key: 'settings', label: 'Configurações' }
+            ];
+
+            return `
+                <div class="space-y-5">
+                    <!-- Barra de Ações e Busca de Clínicas -->
+                    <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                        <div>
+                            <h2 class="text-lg font-extrabold text-white">Gestão de Clínicas, Proprietários & Permissões de Tela</h2>
+                            <p class="text-xs text-slate-400">Cadastre novas clínicas vendidas, edite login/senha do proprietário, controle vencimentos e defina quais telas ele pode acessar</p>
+                        </div>
+                        <button onclick="openMasterClinicModal()" class="bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-extrabold px-5 py-3 rounded-xl shadow-lg flex items-center gap-2 shrink-0">
+                            <i class="fa-solid fa-plus"></i> Cadastrar Nova Clínica / Proprietário
+                        </button>
+                    </div>
+
+                    <!-- Filtros -->
+                    <div class="flex flex-col sm:flex-row gap-3">
+                        <div class="relative flex-1">
+                            <i class="fa-solid fa-magnifying-glass absolute left-4 top-3.5 text-slate-500 text-xs"></i>
+                            <input type="text" value="${masterSearchQuery}" oninput="masterSearchQuery=this.value; renderApp();" placeholder="Buscar por nome da clínica, proprietário, slug, CNPJ ou e-mail..." class="w-full bg-slate-900 border border-slate-800 rounded-xl pl-10 pr-4 py-2.5 text-xs text-white focus:outline-none focus:border-amber-500">
+                        </div>
+                        <select onchange="masterStatusFilter=this.value; renderApp();" class="bg-slate-900 border border-slate-800 rounded-xl px-4 py-2.5 text-xs font-bold text-slate-200">
+                            <option value="all" ${masterStatusFilter === 'all' ? 'selected' : ''}>Todos os Status</option>
+                            <option value="Ativo" ${masterStatusFilter === 'Ativo' ? 'selected' : ''}>Ativo (Em dia)</option>
+                            <option value="Pendente" ${masterStatusFilter === 'Pendente' ? 'selected' : ''}>Pendente</option>
+                            <option value="Atrasado" ${masterStatusFilter === 'Atrasado' ? 'selected' : ''}>Atrasado</option>
+                            <option value="Bloqueado" ${masterStatusFilter === 'Bloqueado' ? 'selected' : ''}>Bloqueado</option>
+                        </select>
+                    </div>
+
+                    <!-- Cards Completos de Cada Clínica Cadastrada -->
+                    <div class="grid grid-cols-1 xl:grid-cols-2 gap-4">
+                        ${filtered.map(item => {
+                            const slug = item.store_id;
+                            const cfg = item.data.config;
+                            const sub = cfg.saasSubscription || {};
+                            const screens = cfg.masterAllowedScreens || {};
+                            const patCount = (item.data.patients || []).length;
+                            const apptCount = (item.data.appointments || []).length;
+                            const clinicUrl = `${window.location.origin}${window.location.pathname}?clinica=${slug}`;
+
+                            return `
+                                <div class="bg-slate-900 border ${sub.status === 'Bloqueado' ? 'border-rose-500/50' : 'border-slate-800'} rounded-2xl p-5 flex flex-col justify-between gap-4 shadow-lg">
+                                    <div class="space-y-3">
+                                        <!-- Topo do Card -->
+                                        <div class="flex items-start justify-between gap-3 border-b border-slate-800 pb-3">
+                                            <div class="flex items-center gap-3 min-w-0">
+                                                <img src="${cfg.logoUrl || DEFAULT_LOGO_SVG}" class="w-12 h-12 rounded-xl object-contain bg-white p-1 shrink-0">
+                                                <div class="min-w-0">
+                                                    <div class="flex items-center gap-2">
+                                                        <span class="px-2 py-0.5 rounded bg-amber-500/15 text-amber-400 font-mono text-[10px] font-bold">?clinica=${slug}</span>
+                                                        <span class="px-2 py-0.5 rounded-full text-[10px] font-extrabold ${
+                                                            sub.status === 'Ativo' ? 'bg-emerald-500/20 text-emerald-400' :
+                                                            sub.status === 'Bloqueado' ? 'bg-rose-500/20 text-rose-400' :
+                                                            'bg-amber-500/20 text-amber-400'
+                                                        }">${sub.status || 'Ativo'}</span>
+                                                    </div>
+                                                    <h3 class="text-base font-extrabold text-white truncate mt-1">${cfg.name}</h3>
+                                                    <p class="text-xs text-slate-400 truncate">Proprietário(a): <strong class="text-slate-200">${cfg.ownerName || cfg.name}</strong></p>
+                                                </div>
+                                            </div>
+                                            <div class="text-right shrink-0">
+                                                <span class="text-sm font-extrabold text-emerald-400 block">${formatBRL(sub.planValue || 149.90)}</span>
+                                                <span class="text-[10px] text-slate-400 block">Vence: ${formatDateBR(sub.dueDate)}</span>
+                                                <span class="text-[10px] text-amber-400 font-semibold">${sub.paymentMethod || 'PIX Mensal'}</span>
+                                            </div>
+                                        </div>
+
+                                        <!-- Dados Cadastrais + Login/Senha do Proprietário -->
+                                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 bg-slate-950 border border-slate-800/90 rounded-xl p-3.5 text-xs">
+                                            <div>
+                                                <p class="text-slate-400">CNPJ/CPF: <strong class="text-slate-200">${cfg.cnpj || '-'}</strong></p>
+                                                <p class="text-slate-400">CREFITO: <strong class="text-slate-200">${cfg.crefito || '-'}</strong></p>
+                                                <p class="text-slate-400">WhatsApp: <strong class="text-emerald-400">${cfg.phone || '-'}</strong></p>
+                                            </div>
+                                            <div>
+                                                <p class="text-slate-400">Login Prop.: <strong class="text-amber-400">${cfg.email}</strong></p>
+                                                <p class="text-slate-400">Senha Prop.: <code class="px-1.5 py-0.5 rounded bg-slate-800 text-white font-bold">${cfg.password}</code></p>
+                                                <p class="text-slate-400">Uso: <strong class="text-slate-200">${patCount} pac. • ${apptCount} agend.</strong></p>
+                                            </div>
+                                            <div class="sm:col-span-2 pt-1.5 border-t border-slate-800/80 text-[11px] text-slate-400 truncate">
+                                                <i class="fa-solid fa-location-dot text-amber-400 mr-1"></i> ${cfg.address || 'Endereço não informado'}
+                                            </div>
+                                        </div>
+
+                                        <!-- Controle Rápido de Telas Liberadas pelo Desenvolvedor -->
+                                        <div class="bg-slate-950/60 border border-slate-800 rounded-xl p-3">
+                                            <div class="flex items-center justify-between mb-2">
+                                                <span class="text-[10px] font-extrabold uppercase tracking-wider text-amber-400">
+                                                    <i class="fa-solid fa-sliders mr-1"></i> Telas Liberadas para este Proprietário (Clique para Ligar/Desligar):
+                                                </span>
+                                            </div>
+                                            <div class="flex flex-wrap gap-1.5">
+                                                ${screenLabels.map(sc => {
+                                                    const isAllowed = screens[sc.key] !== false;
+                                                    return `
+                                                        <button type="button" onclick="toggleClinicScreenPermission('${slug}', '${sc.key}')" class="px-2.5 py-1 rounded-lg text-[11px] font-bold transition flex items-center gap-1 border ${
+                                                            isAllowed
+                                                                ? 'bg-emerald-500/15 border-emerald-500/40 text-emerald-300 hover:bg-emerald-500/25'
+                                                                : 'bg-rose-500/10 border-rose-500/30 text-rose-400 line-through opacity-75 hover:opacity-100'
+                                                        }">
+                                                            <i class="fa-solid ${isAllowed ? 'fa-check' : 'fa-ban'} text-[10px]"></i> ${sc.label}
+                                                        </button>
+                                                    `;
+                                                }).join('')}
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Botões de Ação do Desenvolvedor -->
+                                    <div class="pt-3 border-t border-slate-800 flex flex-wrap items-center justify-between gap-2">
+                                        <div class="flex flex-wrap gap-1.5">
+                                            <button onclick="openMasterClinicModal('${slug}')" class="px-3 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 text-xs font-extrabold flex items-center gap-1.5 transition">
+                                                <i class="fa-solid fa-user-pen"></i> Editar Tudo
+                                            </button>
+                                            <button onclick="impersonateClinicOwner('${slug}')" class="px-3 py-2 rounded-xl bg-sky-600 hover:bg-sky-500 text-white text-xs font-bold flex items-center gap-1.5 transition" title="Entrar no painel desta clínica como proprietário">
+                                                <i class="fa-solid fa-arrow-up-right-from-square"></i> Acessar Painel
+                                            </button>
+                                            <button onclick="sendOwnerAccessWhatsApp('${slug}')" class="px-3 py-2 rounded-xl bg-emerald-600/20 hover:bg-emerald-600/30 border border-emerald-500/30 text-emerald-400 text-xs font-bold flex items-center gap-1.5 transition" title="Enviar link, login e senha para o proprietário">
+                                                <i class="fa-brands fa-whatsapp"></i> Enviar Login
+                                            </button>
+                                            <button onclick="sendSaasBillingWhatsApp('${slug}')" class="px-3 py-2 rounded-xl bg-amber-500/15 hover:bg-amber-500/25 border border-amber-500/30 text-amber-300 text-xs font-bold flex items-center gap-1.5 transition" title="Cobrar mensalidade no WhatsApp">
+                                                <i class="fa-solid fa-hand-holding-dollar"></i> Cobrar
+                                            </button>
+                                        </div>
+                                        <div class="flex items-center gap-1">
+                                            <button onclick="navigator.clipboard.writeText('${clinicUrl}'); alert('Link copiado: ${clinicUrl}');" class="p-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs" title="Copiar Link da Clínica">
+                                                <i class="fa-solid fa-copy"></i>
+                                            </button>
+                                            <button onclick="toggleClinicLockStatus('${slug}')" class="p-2 rounded-lg ${sub.status === 'Bloqueado' ? 'bg-emerald-500/20 text-emerald-400' : 'bg-rose-500/15 text-rose-400'} text-xs" title="${sub.status === 'Bloqueado' ? 'Desbloquear Clínica' : 'Bloquear Clínica'}">
+                                                <i class="fa-solid ${sub.status === 'Bloqueado' ? 'fa-lock-open' : 'fa-lock'}"></i>
+                                            </button>
+                                            ${slug !== 'demo' ? `
+                                            <button onclick="deleteClinicFromSupabase('${slug}')" class="p-2 rounded-lg text-rose-500 hover:bg-rose-500/15 text-xs" title="Excluir Clínica Permanentemente">
+                                                <i class="fa-solid fa-trash"></i>
+                                            </button>` : ''}
+                                        </div>
+                                    </div>
+                                </div>
+                            `;
+                        }).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        // =========================================================================
+        // 8.2 ABA MASTER: FINANÇAS DO DESENVOLVEDOR (ASSINATURAS, PLANOS E COBRANÇAS)
+        // =========================================================================
+        function renderMasterFinanceTab() {
+            return `
+                <div class="space-y-6">
+                    <!-- Controle de Mensalidades e Vencimentos por Clínica -->
+                    <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 space-y-4">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                            <div>
+                                <h2 class="text-lg font-extrabold text-white">Controle de Assinaturas & Vencimentos das Clínicas</h2>
+                                <p class="text-xs text-slate-400">Dê baixa nas mensalidades pagas (renova +1 mês automaticamente) ou envie cobrança via WhatsApp</p>
+                            </div>
+                            <button onclick="openMasterManualBillingModal()" class="bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-extrabold px-4 py-2.5 rounded-xl">
+                                + Lançar Recebimento Manual
+                            </button>
+                        </div>
+
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left border-collapse text-xs">
+                                <thead class="bg-slate-950 text-slate-400 uppercase border-b border-slate-800">
+                                    <tr>
+                                        <th class="p-3.5">Clínica / Proprietário</th>
+                                        <th class="p-3.5">CNPJ / WhatsApp</th>
+                                        <th class="p-3.5">Plano & Método</th>
+                                        <th class="p-3.5">Vencimento</th>
+                                        <th class="p-3.5">Valor</th>
+                                        <th class="p-3.5">Status</th>
+                                        <th class="p-3.5 text-right">Ações Financeiras</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-slate-800">
+                                    ${allClinicsList.map(item => {
+                                        const slug = item.store_id;
+                                        const cfg = item.data.config;
+                                        const sub = cfg.saasSubscription || {};
+                                        return `
+                                            <tr class="hover:bg-slate-800/40">
+                                                <td class="p-3.5">
+                                                    <p class="font-extrabold text-white">${cfg.name}</p>
+                                                    <p class="text-[11px] text-slate-400">${cfg.ownerName || '-'} (<code class="text-amber-400">?clinica=${slug}</code>)</p>
+                                                </td>
+                                                <td class="p-3.5">
+                                                    <p class="text-slate-300">${cfg.cnpj || '-'}</p>
+                                                    <p class="text-[11px] text-emerald-400">${cfg.phone || '-'}</p>
+                                                </td>
+                                                <td class="p-3.5">
+                                                    <p class="font-bold text-slate-200">${sub.planName || 'Plano Pro'}</p>
+                                                    <span class="px-2 py-0.5 rounded bg-slate-800 text-amber-400 text-[10px] font-semibold">${sub.paymentMethod || 'PIX Mensal'}</span>
+                                                </td>
+                                                <td class="p-3.5 font-bold text-white whitespace-nowrap">${formatDateBR(sub.dueDate)}</td>
+                                                <td class="p-3.5 font-extrabold text-emerald-400 whitespace-nowrap">${formatBRL(sub.planValue || 149.90)}</td>
+                                                <td class="p-3.5">
+                                                    <span class="px-2.5 py-1 rounded-full text-[10px] font-bold ${
+                                                        sub.status === 'Ativo' ? 'bg-emerald-500/20 text-emerald-400' :
+                                                        sub.status === 'Bloqueado' ? 'bg-rose-500/20 text-rose-400' :
+                                                        'bg-amber-500/20 text-amber-400'
+                                                    }">${sub.status || 'Ativo'}</span>
+                                                </td>
+                                                <td class="p-3.5 text-right whitespace-nowrap space-x-1.5">
+                                                    <button onclick="registerClinicMonthlyPayment('${slug}')" class="px-3 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-[11px]" title="Confirmar pagamento e renovar vencimento para o próximo mês">
+                                                        <i class="fa-solid fa-check mr-1"></i> Receber + Renovar
+                                                    </button>
+                                                    <button onclick="sendSaasBillingWhatsApp('${slug}')" class="px-3 py-1.5 rounded-xl bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 font-bold text-[11px]">
+                                                        <i class="fa-brands fa-whatsapp mr-1"></i> Cobrar
+                                                    </button>
+                                                    <button onclick="openMasterClinicModal('${slug}')" class="p-1.5 text-slate-400 hover:text-white">
+                                                        <i class="fa-solid fa-pen"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        `;
+                                    }).join('')}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Histórico de Pagamentos Recebidos pelo Desenvolvedor -->
+                    <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 space-y-4">
+                        <h3 class="text-base font-extrabold text-white">Histórico de Mensalidades Recebidas pelo Desenvolvedor</h3>
+                        <div class="divide-y divide-slate-800 text-xs">
+                            ${masterSaasData.billingHistory.length === 0 ? `<p class="text-slate-500 py-4 text-center">Nenhum pagamento registrado ainda.</p>` : ''}
+                            ${masterSaasData.billingHistory.slice().reverse().map(b => `
+                                <div class="py-3 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                                    <div>
+                                        <span class="text-emerald-400 font-bold">${formatDateBR(b.date)}</span>
+                                        <span class="text-white font-extrabold ml-2">${b.clinicName}</span>
+                                        <span class="text-slate-400 ml-1">(${b.ownerName || b.storeSlug})</span>
+                                        <p class="text-[11px] text-slate-400 mt-0.5">${b.planName} • Pago via <b>${b.method}</b> • ${b.notes || ''}</p>
+                                    </div>
+                                    <div class="flex items-center gap-3">
+                                        <span class="text-sm font-extrabold text-emerald-400">${formatBRL(b.amount)}</span>
+                                        <button onclick="deleteMasterBillingItem(${b.id})" class="text-rose-500 hover:bg-rose-500/15 p-1.5 rounded"><i class="fa-solid fa-trash"></i></button>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // =========================================================================
+        // 8.3 ABA MASTER: CADASTRO DE MÉTODOS DE PAGAMENTO E CHAVE PIX DO DEV
+        // =========================================================================
+        function renderMasterPaymentMethodsTab() {
+            return `
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <!-- Configuração de Métodos de Pagamento Aceitos pelo Desenvolvedor -->
+                    <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-4">
+                        <h3 class="text-base font-extrabold text-white">Métodos de Pagamento Disponíveis para as Clínicas</h3>
+                        <p class="text-xs text-slate-400">Cadastre as formas de pagamento que você oferece ao vender o sistema (ex: PIX Mensal, Cartão Recorrente, Boleto, Semestral)</p>
+
+                        <form onsubmit="addMasterPaymentMethod(event)" class="flex gap-2">
+                            <input type="text" id="new-pay-method" required placeholder="Ex: PIX Trimestral / Boleto Bancário..." class="flex-1 bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-white">
+                            <button type="submit" class="bg-amber-500 hover:bg-amber-400 text-slate-950 font-extrabold text-xs px-4 py-2.5 rounded-xl">+ Adicionar</button>
+                        </form>
+
+                        <div class="space-y-2 pt-2">
+                            ${masterSaasData.paymentMethods.map((pm, idx) => `
+                                <div class="flex items-center justify-between p-3 rounded-xl bg-slate-950 border border-slate-800 text-xs">
+                                    <span class="font-bold text-slate-200"><i class="fa-solid fa-check-circle text-amber-400 mr-2"></i>${pm}</span>
+                                    <button onclick="removeMasterPaymentMethod(${idx})" class="text-rose-400 hover:text-rose-300 text-xs"><i class="fa-solid fa-trash"></i></button>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+
+                    <!-- Dados de Cobrança do Desenvolvedor (PIX e Contato) -->
+                    <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-4">
+                        <h3 class="text-base font-extrabold text-white">Seus Dados de Recebimento (Usados nas Cobranças WhatsApp)</h3>
+                        <form onsubmit="saveMasterDevProfile(event)" class="space-y-3.5 text-xs">
+                            <div>
+                                <label class="block font-bold text-slate-300 mb-1">Seu Nome / Empresa Desenvolvedora</label>
+                                <input type="text" id="mdev-name" value="${masterSaasData.devName}" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-white">
+                            </div>
+                            <div>
+                                <label class="block font-bold text-slate-300 mb-1">Sua Chave PIX para Receber Mensalidades</label>
+                                <input type="text" id="mdev-pix" value="${masterSaasData.devPixKey}" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-amber-400 font-bold">
+                            </div>
+                            <div>
+                                <label class="block font-bold text-slate-300 mb-1">Seu WhatsApp de Suporte</label>
+                                <input type="text" id="mdev-phone" value="${masterSaasData.devPhone}" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-white">
+                            </div>
+                            <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold py-3 rounded-xl shadow">
+                                Salvar Dados do Desenvolvedor
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            `;
+        }
+
+        // =========================================================================
+        // 8.4 FUNÇÕES DO PAINEL MASTER (CRIAR/EDITAR CLÍNICA, PERMISSÕES E COBRANÇA)
+        // =========================================================================
+        function openMasterClinicModal(editSlug = null) {
+            const existing = editSlug ? allClinicsList.find(c => c.store_id === editSlug) : null;
+            const cfg = existing ? existing.data.config : getDefaultData('nova_clinica').config;
+            const sub = cfg.saasSubscription || {
+                planName: 'Plano Pro Completo',
+                planValue: 149.90,
+                billingCycle: 'Mensal',
+                paymentMethod: masterSaasData.paymentMethods[0] || 'PIX Mensal',
+                dueDate: new Date().toISOString().split('T')[0],
+                status: 'Ativo'
+            };
+            const screens = cfg.masterAllowedScreens || {
+                agenda: true, patients: true, evolutions: true, finance: true, staff: true, settings: true
+            };
+
+            showModal(`
+                <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3 mb-4">
+                    <div>
+                        <span class="text-[10px] font-extrabold uppercase text-amber-500 block">Configuração Master do Desenvolvedor</span>
+                        <h3 class="text-base font-extrabold text-slate-900 dark:text-white">${editSlug ? `Editar Clínica & Proprietário (?clinica=${editSlug})` : 'Cadastrar Nova Clínica & Definir Acessos'}</h3>
+                    </div>
+                    <button onclick="closeModal()" class="text-slate-400"><i class="fa-solid fa-xmark text-lg"></i></button>
+                </div>
+
+                <form onsubmit="saveMasterClinicForm(event, ${editSlug ? `'${editSlug}'` : 'null'})" class="space-y-4 text-xs">
+                    <!-- 1. Identificação e Dados do Proprietário -->
+                    <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 space-y-3">
+                        <h4 class="font-extrabold text-brand uppercase text-[11px]">1. Dados Cadastrais da Clínica & Proprietário</h4>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                            <div>
+                                <label class="block font-bold mb-1">Slug URL (?clinica=...) *</label>
+                                <input type="text" id="mc-slug" value="${editSlug || ''}" ${editSlug ? 'readonly' : 'required'} placeholder="ex: clinica_ale" class="w-full bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-800 rounded-xl px-3 py-2 font-mono ${editSlug ? 'opacity-60' : ''}">
+                            </div>
+                            <div class="sm:col-span-2">
+                                <label class="block font-bold mb-1">Nome Fantasia da Clínica *</label>
+                                <input type="text" id="mc-name" value="${editSlug ? cfg.name : ''}" required placeholder="Ex: Alessandra Medeiros Fisioterapia" class="w-full bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-800 rounded-xl px-3 py-2">
+                            </div>
+                            <div>
+                                <label class="block font-bold mb-1">Nome do Proprietário(a) *</label>
+                                <input type="text" id="mc-owner" value="${editSlug ? (cfg.ownerName || cfg.name) : ''}" required placeholder="Ex: Dra. Alessandra Medeiros" class="w-full bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-800 rounded-xl px-3 py-2">
+                            </div>
+                            <div>
+                                <label class="block font-bold mb-1">CNPJ ou CPF *</label>
+                                <input type="text" id="mc-cnpj" value="${editSlug ? (cfg.cnpj || '') : ''}" placeholder="00.000.000/0001-00" class="w-full bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-800 rounded-xl px-3 py-2">
+                            </div>
+                            <div>
+                                <label class="block font-bold mb-1">Registro CREFITO</label>
+                                <input type="text" id="mc-crefito" value="${editSlug ? (cfg.crefito || '') : ''}" placeholder="CREFITO-10 / 12345-F" class="w-full bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-800 rounded-xl px-3 py-2">
+                            </div>
+                            <div>
+                                <label class="block font-bold mb-1">WhatsApp do Proprietário (Cobrança) *</label>
+                                <input type="text" id="mc-phone" value="${editSlug ? (cfg.phone || '') : ''}" required placeholder="48999998888" class="w-full bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-800 rounded-xl px-3 py-2">
+                            </div>
+                            <div class="sm:col-span-2">
+                                <label class="block font-bold mb-1">Endereço Completo da Clínica</label>
+                                <input type="text" id="mc-address" value="${editSlug ? (cfg.address || '') : ''}" placeholder="Rua, Número, Sala, Cidade" class="w-full bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-800 rounded-xl px-3 py-2">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 2. Credenciais de Acesso do Proprietário -->
+                    <div class="p-4 rounded-2xl bg-amber-500/10 border border-amber-500/30 space-y-3">
+                        <h4 class="font-extrabold text-amber-500 uppercase text-[11px]">2. Credenciais de Login do Proprietário na Clínica</h4>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <div>
+                                <label class="block font-bold mb-1">E-mail de Login do Proprietário *</label>
+                                <input type="email" id="mc-email" value="${editSlug ? cfg.email : ''}" required placeholder="proprietario@clinica.com" class="w-full bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-800 rounded-xl px-3 py-2 font-bold">
+                            </div>
+                            <div>
+                                <label class="block font-bold mb-1">Senha de Acesso do Proprietário *</label>
+                                <input type="text" id="mc-pass" value="${editSlug ? cfg.password : '123'}" required class="w-full bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-800 rounded-xl px-3 py-2 font-bold">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 3. Plano SaaS, Método de Pagamento e Vencimento -->
+                    <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 space-y-3">
+                        <h4 class="font-extrabold text-emerald-500 uppercase text-[11px]">3. Plano Contratado, Método de Pagamento & Vencimento</h4>
+                        <div class="grid grid-cols-1 sm:grid-cols-4 gap-3">
+                            <div class="sm:col-span-2">
+                                <label class="block font-bold mb-1">Nome do Plano</label>
+                                <input type="text" id="mc-plan" value="${sub.planName || 'Plano Pro Completo'}" class="w-full bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-800 rounded-xl px-3 py-2">
+                            </div>
+                            <div>
+                                <label class="block font-bold mb-1">Valor Mensal (R$)</label>
+                                <input type="number" step="0.01" id="mc-val" value="${sub.planValue || 149.90}" class="w-full bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-800 rounded-xl px-3 py-2 font-bold">
+                            </div>
+                            <div>
+                                <label class="block font-bold mb-1">Vencimento</label>
+                                <input type="date" id="mc-due" value="${sub.dueDate || new Date().toISOString().split('T')[0]}" class="w-full bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-800 rounded-xl px-3 py-2">
+                            </div>
+                            <div class="sm:col-span-2">
+                                <label class="block font-bold mb-1">Método de Pagamento Definido pelo Dev</label>
+                                <select id="mc-method" class="w-full bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-800 rounded-xl px-3 py-2 font-bold">
+                                    ${masterSaasData.paymentMethods.map(pm => `<option value="${pm}" ${sub.paymentMethod === pm ? 'selected' : ''}>${pm}</option>`).join('')}
+                                </select>
+                            </div>
+                            <div class="sm:col-span-2">
+                                <label class="block font-bold mb-1">Status da Assinatura</label>
+                                <select id="mc-status" class="w-full bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-800 rounded-xl px-3 py-2 font-bold">
+                                    <option value="Ativo" ${sub.status === 'Ativo' ? 'selected' : ''}>✅ Ativo (Liberado)</option>
+                                    <option value="Pendente" ${sub.status === 'Pendente' ? 'selected' : ''}>⏳ Pagamento Pendente</option>
+                                    <option value="Atrasado" ${sub.status === 'Atrasado' ? 'selected' : ''}>⚠️ Atrasado</option>
+                                    <option value="Bloqueado" ${sub.status === 'Bloqueado' ? 'selected' : ''}>🔒 Bloqueado (Suspende Acesso)</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 4. Telas Liberadas pelo Desenvolvedor (Soberania Master) -->
+                    <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 space-y-2.5">
+                        <h4 class="font-extrabold text-slate-900 dark:text-white uppercase text-[11px]">4. Controle de Telas (O que este Proprietário pode acessar?)</h4>
+                        <p class="text-[11px] text-slate-500">Se você desmarcar uma tela abaixo, o proprietário não poderá vê-la nem ativá-la nas configurações dele.</p>
+                        <div class="grid grid-cols-2 sm:grid-cols-3 gap-2.5 pt-1">
+                            <label class="flex items-center gap-2 p-2.5 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 cursor-pointer">
+                                <input type="checkbox" id="ms-agenda" ${screens.agenda !== false ? 'checked' : ''} class="w-4 h-4">
+                                <span class="font-bold">📅 Agenda & KPIs</span>
+                            </label>
+                            <label class="flex items-center gap-2 p-2.5 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 cursor-pointer">
+                                <input type="checkbox" id="ms-patients" ${screens.patients !== false ? 'checked' : ''} class="w-4 h-4">
+                                <span class="font-bold">👥 Pacientes</span>
+                            </label>
+                            <label class="flex items-center gap-2 p-2.5 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 cursor-pointer">
+                                <input type="checkbox" id="ms-evolutions" ${screens.evolutions !== false ? 'checked' : ''} class="w-4 h-4">
+                                <span class="font-bold">📋 Evoluções & PDF</span>
+                            </label>
+                            <label class="flex items-center gap-2 p-2.5 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 cursor-pointer">
+                                <input type="checkbox" id="ms-finance" ${screens.finance !== false ? 'checked' : ''} class="w-4 h-4">
+                                <span class="font-bold">💰 Financeiro</span>
+                            </label>
+                            <label class="flex items-center gap-2 p-2.5 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 cursor-pointer">
+                                <input type="checkbox" id="ms-staff" ${screens.staff !== false ? 'checked' : ''} class="w-4 h-4">
+                                <span class="font-bold">👨‍⚕️ Funcionários</span>
+                            </label>
+                            <label class="flex items-center gap-2 p-2.5 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 cursor-pointer">
+                                <input type="checkbox" id="ms-settings" ${screens.settings !== false ? 'checked' : ''} class="w-4 h-4">
+                                <span class="font-bold">⚙️ Personalizar Site</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="pt-2 flex justify-end gap-2">
+                        <button type="button" onclick="closeModal()" class="px-4 py-2.5 rounded-xl bg-slate-200 dark:bg-slate-800 font-bold">Cancelar</button>
+                        <button type="submit" class="px-6 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold shadow-lg">
+                            Salvar Clínica no Supabase
+                        </button>
+                    </div>
+                </form>
+            `);
+        }
+
+        async function saveMasterClinicForm(e, editSlug) {
+            e.preventDefault();
+            const rawSlug = editSlug || document.getElementById('mc-slug').value.toLowerCase().trim().replace(/[^a-z0-9_-]/g, '');
+            if (!rawSlug || rawSlug === MASTER_CONFIG_ID) {
+                alert("Informe um identificador (slug) válido para a clínica.");
+                return;
+            }
+
+            const existingItem = allClinicsList.find(c => c.store_id === rawSlug);
+            const clinicObj = existingItem ? ensureDataIntegrity(existingItem.data, rawSlug) : getDefaultData(rawSlug);
+
+            clinicObj.config.name = document.getElementById('mc-name').value.trim();
+            clinicObj.config.ownerName = document.getElementById('mc-owner').value.trim();
+            clinicObj.config.cnpj = document.getElementById('mc-cnpj').value.trim();
+            clinicObj.config.crefito = document.getElementById('mc-crefito').value.trim();
+            clinicObj.config.phone = document.getElementById('mc-phone').value.trim();
+            clinicObj.config.address = document.getElementById('mc-address').value.trim();
+            clinicObj.config.email = document.getElementById('mc-email').value.trim();
+            clinicObj.config.password = document.getElementById('mc-pass').value.trim();
+
+            clinicObj.config.saasSubscription = {
+                planName: document.getElementById('mc-plan').value.trim(),
+                planValue: Number(document.getElementById('mc-val').value || 0),
+                billingCycle: 'Mensal',
+                paymentMethod: document.getElementById('mc-method').value,
+                dueDate: document.getElementById('mc-due').value,
+                status: document.getElementById('mc-status').value
+            };
+
+            const staffAllowed = document.getElementById('ms-staff').checked;
+            clinicObj.config.masterAllowedScreens = {
+                agenda: document.getElementById('ms-agenda').checked,
+                patients: document.getElementById('ms-patients').checked,
+                evolutions: document.getElementById('ms-evolutions').checked,
+                finance: document.getElementById('ms-finance').checked,
+                staff: staffAllowed,
+                settings: document.getElementById('ms-settings').checked
+            };
+            if (!staffAllowed) {
+                clinicObj.config.enableStaffModule = false;
+            }
+
+            await saveClinicData(rawSlug, clinicObj);
+            if (rawSlug === storeId) {
+                dbData = clinicObj;
+            }
+            closeModal();
+            await loadAllClinicsForMaster();
+        }
+
+        async function toggleClinicScreenPermission(slug, screenKey) {
+            const item = allClinicsList.find(c => c.store_id === slug);
+            if (!item) return;
+            if (!item.data.config.masterAllowedScreens) {
+                item.data.config.masterAllowedScreens = { agenda: true, patients: true, evolutions: true, finance: true, staff: true, settings: true };
+            }
+            const currentVal = item.data.config.masterAllowedScreens[screenKey] !== false;
+            item.data.config.masterAllowedScreens[screenKey] = !currentVal;
+            if (screenKey === 'staff' && currentVal === true) {
+                item.data.config.enableStaffModule = false;
+            }
+            await saveClinicData(slug, item.data);
+            if (slug === storeId) dbData = item.data;
+            renderApp();
+        }
+
+        async function toggleClinicLockStatus(slug) {
+            const item = allClinicsList.find(c => c.store_id === slug);
+            if (!item) return;
+            const cur = item.data.config.saasSubscription?.status || 'Ativo';
+            item.data.config.saasSubscription.status = cur === 'Bloqueado' ? 'Ativo' : 'Bloqueado';
+            await saveClinicData(slug, item.data);
+            if (slug === storeId) dbData = item.data;
+            renderApp();
+        }
+
+        async function deleteClinicFromSupabase(slug) {
+            if (!confirm(`Tem certeza que deseja EXCLUIR permanentemente a clínica "?clinica=${slug}" do Supabase?`)) return;
+            try {
+                await fetch(`${SUPABASE_URL}/rest/v1/fisio_data?store_id=eq.${slug}`, {
+                    method: 'DELETE',
+                    headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` }
+                });
+                localStorage.removeItem(`fisio_v5_${slug}`);
+            } catch (e) {}
+            await loadAllClinicsForMaster();
+        }
+
+        // Entrar diretamente no painel de qualquer clínica como Proprietário
+        function impersonateClinicOwner(slug) {
+            const item = allClinicsList.find(c => c.store_id === slug);
+            if (!item) return;
+            storeId = slug;
+            dbData = ensureDataIntegrity(item.data, slug);
+            document.getElementById('footer-store-param').innerText = `?clinica=${storeId}`;
+            applyThemeAndColors();
+            currentSession = { role: 'owner', user: { name: dbData.config.ownerName || dbData.config.name }, impersonatedByMaster: true };
+            ownerTab = 'agenda';
+            renderApp();
+        }
+
+        function returnToMasterFromImpersonation() {
+            currentSession = { role: 'master', user: { name: 'Rafael (Master)' } };
+            loadAllClinicsForMaster();
+        }
+
+        function sendOwnerAccessWhatsApp(slug) {
+            const item = allClinicsList.find(c => c.store_id === slug);
+            if (!item) return;
+            const cfg = item.data.config;
+            const link = `${window.location.origin}${window.location.pathname}?clinica=${slug}`;
+            const msg = `Olá *${cfg.ownerName || cfg.name}*! Seu sistema de gestão clínica está pronto e configurado.\n\n🔗 *Link exclusivo da sua clínica:*\n${link}\n\n🔒 *Para acessar o Painel do Proprietário (no rodapé do site):*\n📧 *E-mail:* ${cfg.email}\n🔑 *Senha:* ${cfg.password}\n\nQualquer dúvida estou à disposição!`;
+            window.open(`https://wa.me/55${(cfg.phone || '').replace(/\D/g,'')}?text=${encodeURIComponent(msg)}`, '_blank');
+        }
+
+        function sendSaasBillingWhatsApp(slug) {
+            const item = allClinicsList.find(c => c.store_id === slug);
+            if (!item) return;
+            const cfg = item.data.config;
+            const sub = cfg.saasSubscription || {};
+            const msg = `Olá *${cfg.ownerName || cfg.name}*! Tudo bem?\n\nPassando para enviar o lembrete da assinatura do sistema de gestão da *${cfg.name}*:\n\n📋 *Plano:* ${sub.planName || 'Plano Pro'}\n💳 *Forma de Pagamento:* ${sub.paymentMethod || 'PIX Mensal'}\n📅 *Vencimento:* ${formatDateBR(sub.dueDate)}\n💰 *Valor:* ${formatBRL(sub.planValue || 149.90)}\n\n🔑 *Chave PIX para pagamento:* ${masterSaasData.devPixKey}\n\nAssim que realizar, pode me enviar o comprovante por aqui para renovação automática. Obrigado!`;
+            window.open(`https://wa.me/55${(cfg.phone || '').replace(/\D/g,'')}?text=${encodeURIComponent(msg)}`, '_blank');
+        }
+
+        async function registerClinicMonthlyPayment(slug) {
+            const item = allClinicsList.find(c => c.store_id === slug);
+            if (!item) return;
+            const cfg = item.data.config;
+            const sub = cfg.saasSubscription || {};
+
+            // Avança 1 mês no vencimento
+            const baseDate = sub.dueDate ? new Date(sub.dueDate + "T12:00:00") : new Date();
+            baseDate.setMonth(baseDate.getMonth() + 1);
+            const newDue = baseDate.toISOString().split('T')[0];
+
+            sub.dueDate = newDue;
+            sub.status = 'Ativo';
+            item.data.config.saasSubscription = sub;
+
+            // Registra no histórico financeiro do Desenvolvedor
+            masterSaasData.billingHistory.push({
+                id: Date.now(),
+                date: new Date().toISOString().split('T')[0],
+                storeSlug: slug,
+                clinicName: cfg.name,
+                ownerName: cfg.ownerName || cfg.name,
+                planName: sub.planName || 'Plano Pro',
+                method: sub.paymentMethod || 'PIX Mensal',
+                amount: Number(sub.planValue || 149.90),
+                status: 'Pago',
+                notes: `Renovado até ${formatDateBR(newDue)}`
+            });
+
+            await saveClinicData(slug, item.data);
+            await saveMasterSaasData();
+            alert(`Pagamento de ${formatBRL(sub.planValue)} registrado! Novo vencimento de ${cfg.name}: ${formatDateBR(newDue)}`);
+            renderApp();
+        }
+
+        function openMasterManualBillingModal() {
+            const today = new Date().toISOString().split('T')[0];
+            showModal(`
+                <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3 mb-4">
+                    <h3 class="text-base font-extrabold text-slate-900 dark:text-white">Lançar Recebimento SaaS Manual</h3>
+                    <button onclick="closeModal()" class="text-slate-400"><i class="fa-solid fa-xmark text-lg"></i></button>
+                </div>
+                <form onsubmit="saveMasterManualBilling(event)" class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                    <div class="sm:col-span-2">
+                        <label class="block font-bold mb-1">Clínica</label>
+                        <select id="mb-slug" class="w-full bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-xl px-3.5 py-2.5">
+                            ${allClinicsList.map(c => `<option value="${c.store_id}">${c.data.config.name} (?clinica=${c.store_id})</option>`).join('')}
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block font-bold mb-1">Valor Recebido (R$)</label>
+                        <input type="number" step="0.01" id="mb-val" value="149.90" required class="w-full bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-xl px-3.5 py-2.5">
+                    </div>
+                    <div>
+                        <label class="block font-bold mb-1">Data</label>
+                        <input type="date" id="mb-date" value="${today}" required class="w-full bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-xl px-3.5 py-2.5">
+                    </div>
+                    <div>
+                        <label class="block font-bold mb-1">Método de Pagamento</label>
+                        <select id="mb-method" class="w-full bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-xl px-3.5 py-2.5">
+                            ${masterSaasData.paymentMethods.map(pm => `<option value="${pm}">${pm}</option>`).join('')}
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block font-bold mb-1">Observação</label>
+                        <input type="text" id="mb-notes" placeholder="Ex: Taxa de implantação / Mensalidade" class="w-full bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-xl px-3.5 py-2.5">
+                    </div>
+                    <div class="sm:col-span-2 pt-3 flex justify-end gap-2">
+                        <button type="button" onclick="closeModal()" class="px-4 py-2.5 rounded-xl bg-slate-200 dark:bg-slate-800 font-bold">Cancelar</button>
+                        <button type="submit" class="px-5 py-2.5 rounded-xl bg-emerald-600 text-white font-bold">Salvar Recebimento</button>
+                    </div>
+                </form>
+            `);
+        }
+
+        async function saveMasterManualBilling(e) {
+            e.preventDefault();
+            const slug = document.getElementById('mb-slug').value;
+            const item = allClinicsList.find(c => c.store_id === slug);
+            masterSaasData.billingHistory.push({
+                id: Date.now(),
+                date: document.getElementById('mb-date').value,
+                storeSlug: slug,
+                clinicName: item ? item.data.config.name : slug,
+                ownerName: item ? item.data.config.ownerName : '',
+                planName: item?.data.config.saasSubscription?.planName || 'Assinatura SaaS',
+                method: document.getElementById('mb-method').value,
+                amount: Number(document.getElementById('mb-val').value || 0),
+                status: 'Pago',
+                notes: document.getElementById('mb-notes').value.trim()
+            });
+            await saveMasterSaasData();
+            closeModal();
+            renderApp();
+        }
+
+        async function deleteMasterBillingItem(id) {
+            if (!confirm("Excluir este registro do histórico financeiro do desenvolvedor?")) return;
+            masterSaasData.billingHistory = masterSaasData.billingHistory.filter(b => b.id !== id);
+            await saveMasterSaasData();
+            renderApp();
+        }
+
+        async function addMasterPaymentMethod(e) {
+            e.preventDefault();
+            const val = document.getElementById('new-pay-method').value.trim();
+            if (!val) return;
+            masterSaasData.paymentMethods.push(val);
+            await saveMasterSaasData();
+            renderApp();
+        }
+
+        async function removeMasterPaymentMethod(idx) {
+            masterSaasData.paymentMethods.splice(idx, 1);
+            await saveMasterSaasData();
+            renderApp();
+        }
+
+        async function saveMasterDevProfile(e) {
+            e.preventDefault();
+            masterSaasData.devName = document.getElementById('mdev-name').value.trim();
+            masterSaasData.devPixKey = document.getElementById('mdev-pix').value.trim();
+            masterSaasData.devPhone = document.getElementById('mdev-phone').value.trim();
+            await saveMasterSaasData();
+            alert("Dados do Desenvolvedor salvos com sucesso!");
+            renderApp();
+        }
+
+        // =========================================================================
+        // 9. IMPRESSÃO DE ESPELHO INDIVIDUAL E GERAL
         // =========================================================================
         function printPatientMirror(patientId) {
             const pat = dbData.patients.find(p => p.id === Number(patientId));
@@ -1513,7 +2491,7 @@
         }
 
         // =========================================================================
-        // 9. MODAIS AUXILIARES
+        // 10. MODAIS AUXILIARES DA CLÍNICA
         // =========================================================================
         function showModal(html) {
             const root = document.getElementById('modal-root');
@@ -1608,7 +2586,7 @@
         function sendPatientCredentialsWhatsApp(patId) {
             const p = dbData.patients.find(x => x.id === patId);
             if (!p) return;
-            const url = window.location.href.split('#')[0];
+            const url = `${window.location.origin}${window.location.pathname}?clinica=${storeId}`;
             const msg = `Olá! Segue o acesso exclusivo ao Portal do Paciente de *${p.name}* na clínica *${dbData.config.name}*:\n\n🔗 *Link:* ${url}\n👤 *Login (WhatsApp):* ${p.phone}\n🔑 *Senha:* ${p.password}`;
             window.open(`https://wa.me/55${p.phone.replace(/\D/g,'')}?text=${encodeURIComponent(msg)}`, '_blank');
         }
@@ -1945,18 +2923,18 @@
         }
 
         // =========================================================================
-        // 10. LOGIN PROPRIETÁRIO E MASTER
+        // 11. LOGIN PROPRIETÁRIO E MASTER
         // =========================================================================
         function openOwnerLoginModal() {
             showModal(`
                 <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3 mb-4">
-                    <h3 class="text-base font-extrabold text-slate-900 dark:text-white">Acesso do Fisioterapeuta / Proprietário</h3>
+                    <h3 class="text-base font-extrabold text-slate-900 dark:text-white">Acesso Restrito — Proprietário ou Desenvolvedor</h3>
                     <button onclick="closeModal()" class="text-slate-400"><i class="fa-solid fa-xmark text-lg"></i></button>
                 </div>
                 <form onsubmit="handleOwnerLogin(event)" class="space-y-4 text-xs">
                     <div>
-                        <label class="block font-bold mb-1">E-mail</label>
-                        <input type="email" id="owner-email" required placeholder="demo@fisio.com" class="w-full bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-xl px-3.5 py-3">
+                        <label class="block font-bold mb-1">E-mail de Acesso</label>
+                        <input type="email" id="owner-email" required placeholder="demo@fisio.com ou Desenv@Rafael.com" class="w-full bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-xl px-3.5 py-3">
                     </div>
                     <div>
                         <label class="block font-bold mb-1">Senha</label>
@@ -1964,7 +2942,7 @@
                     </div>
                     <div class="flex gap-2 pt-2">
                         <button type="button" onclick="document.getElementById('owner-email').value='${dbData.config.email}'; document.getElementById('owner-pass').value='${dbData.config.password}';" class="flex-1 py-3 rounded-xl bg-slate-100 dark:bg-slate-800 font-bold">
-                            ⚡ Preencher Demo
+                            ⚡ Preencher Prop. Demo
                         </button>
                         <button type="submit" class="flex-1 py-3 rounded-xl bg-brand-gradient text-white font-bold">
                             Entrar no Painel
@@ -1974,7 +2952,7 @@
             `);
         }
 
-        function handleOwnerLogin(e) {
+        async function handleOwnerLogin(e) {
             e.preventDefault();
             const em = document.getElementById('owner-email').value.trim();
             const pw = document.getElementById('owner-pass').value.trim();
@@ -1982,46 +2960,20 @@
             if (em.toLowerCase() === 'desenv@rafael.com' && pw === '123') {
                 currentSession = { role: 'master', user: { name: 'Rafael (Master)' } };
                 closeModal();
-                renderApp();
+                await loadAllClinicsForMaster();
                 return;
             }
-            if (em.toLowerCase() === dbData.config.email.toLowerCase() && pw === dbData.config.password) {
-                currentSession = { role: 'owner', user: { name: dbData.config.name } };
+            if (em.toLowerCase() === dbData.config.email.toLowerCase() && pw === String(dbData.config.password)) {
+                if (dbData.config.saasSubscription?.status === 'Bloqueado') {
+                    alert("Esta clínica encontra-se bloqueada pelo administrador do sistema.");
+                    return;
+                }
+                currentSession = { role: 'owner', user: { name: dbData.config.ownerName || dbData.config.name } };
                 closeModal();
                 renderApp();
                 return;
             }
             alert("E-mail ou senha incorretos.");
-        }
-
-        function renderMasterDevScreen() {
-            return `
-                <div class="flex-1 bg-slate-950 text-white p-6">
-                    <div class="max-w-4xl mx-auto space-y-6">
-                        <div class="flex items-center justify-between border-b border-slate-800 pb-4">
-                            <h1 class="text-xl font-extrabold text-amber-400">Painel Master Multi-Clínicas</h1>
-                            <button onclick="logout()" class="px-4 py-2 rounded-xl bg-slate-800 text-xs font-bold">Voltar</button>
-                        </div>
-                        <form onsubmit="createNewSaasTenant(event)" class="bg-slate-900 border border-slate-800 rounded-2xl p-5 grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
-                            <input type="text" id="master-slug" required placeholder="Slug (ex: clinica_ale)" class="bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-white">
-                            <input type="text" id="master-name" required placeholder="Nome da Clínica" class="bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-white">
-                            <button type="submit" class="bg-emerald-600 text-white font-bold rounded-xl py-2.5 px-4">Criar Clínica</button>
-                        </form>
-                    </div>
-                </div>
-            `;
-        }
-
-        async function createNewSaasTenant(e) {
-            e.preventDefault();
-            const slug = document.getElementById('master-slug').value.toLowerCase().trim().replace(/[^a-z0-9_-]/g, '');
-            const name = document.getElementById('master-name').value.trim();
-            if (!slug) return;
-            storeId = slug;
-            dbData = getDefaultData(slug);
-            dbData.config.name = name;
-            await saveClinicData();
-            window.location.search = `?clinica=${slug}`;
         }
 
         function logout() {
