@@ -96,34 +96,50 @@
         storeId = storeId.toLowerCase().trim().replace(/[^a-z0-9_-]/g, '') || 'demo';
         document.getElementById('footer-store-param').innerText = `?clinica=${storeId}`;
 
-        // Logo Vetorial Padrão (Árvore Dourada & Colorida de Fisioterapia Pediátrica)
+        // Logo Vetorial Padrão (Árvore Dourada & Colorida de Fisioterapia Pediátrica - Alta Definição Panorâmica)
         const DEFAULT_LOGO_SVG = "data:image/svg+xml;utf8," + encodeURIComponent(`
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 210" width="100%" height="100%">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 350" width="100%" height="100%">
                 <defs>
                     <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                        <stop offset="0%" stop-color="#d4af37"/>
-                        <stop offset="50%" stop-color="#aa7c11"/>
-                        <stop offset="100%" stop-color="#e6c665"/>
+                        <stop offset="0%" stop-color="#c89d3c"/>
+                        <stop offset="50%" stop-color="#9b6f15"/>
+                        <stop offset="100%" stop-color="#e3c472"/>
                     </linearGradient>
                 </defs>
-                <rect width="260" height="210" rx="28" fill="#fdfbf7"/>
-                <circle cx="130" cy="74" r="54" fill="#f7f2e7"/>
-                <circle cx="95" cy="68" r="8" fill="#68b5c9"/>
-                <circle cx="115" cy="44" r="9" fill="#f09289"/>
-                <circle cx="145" cy="42" r="8" fill="#68b5c9"/>
-                <circle cx="165" cy="65" r="9" fill="#e8c56b"/>
-                <circle cx="82" cy="88" r="7" fill="#e8c56b"/>
-                <circle cx="178" cy="88" r="7" fill="#f09289"/>
-                <circle cx="130" cy="60" r="10" fill="#95b88d"/>
-                <circle cx="105" cy="86" r="6" fill="#f09289"/>
-                <circle cx="155" cy="84" r="7" fill="#95b88d"/>
-                <path d="M100 150 Q125 140 125 104 Q110 84 95 78 Q120 84 130 96 Q135 74 125 58 Q138 74 136 96 Q152 78 170 76 Q150 88 138 108 Q138 140 165 150 Z" fill="url(#goldGrad)"/>
-                <circle cx="106" cy="122" r="4.5" fill="#e883a0"/>
-                <path d="M102 128 L110 128 L108 140 L104 140 Z" fill="#e883a0"/>
-                <circle cx="158" cy="124" r="4.5" fill="#5da9c4"/>
-                <path d="M154 130 L162 130 L160 142 L156 142 Z" fill="#5da9c4"/>
-                <text x="130" y="175" font-family="sans-serif" font-size="15" font-weight="800" fill="#9a7220" text-anchor="middle">ALESSANDRA MEDEIROS</text>
-                <text x="130" y="191" font-family="sans-serif" font-size="8.5" font-weight="700" letter-spacing="2.5" fill="#5da9c4" text-anchor="middle">FISIOTERAPEUTA PEDIÁTRICA</text>
+                <rect width="600" height="350" fill="#fbf7f4"/>
+                <!-- Copa da Árvore rica em detalhes -->
+                <g transform="translate(300, 125)">
+                    <!-- Folhas e peças coloridas -->
+                    <circle cx="-85" cy="-15" r="10" fill="#77b9ce"/>
+                    <circle cx="-65" cy="-48" r="12" fill="#eb8d82"/>
+                    <circle cx="-25" cy="-68" r="11" fill="#77b9ce"/>
+                    <circle cx="25" cy="-70" r="12" fill="#ebd079"/>
+                    <circle cx="68" cy="-46" r="11" fill="#eb8d82"/>
+                    <circle cx="92" cy="-12" r="10" fill="#98b98f"/>
+                    <circle cx="-102" cy="18" r="9" fill="#ebd079"/>
+                    <circle cx="105" cy="18" r="9" fill="#77b9ce"/>
+                    <circle cx="-48" cy="-22" r="9" fill="#98b98f"/>
+                    <circle cx="0" cy="-42" r="13" fill="#eb8d82"/>
+                    <circle cx="48" cy="-20" r="10" fill="#77b9ce"/>
+                    <circle cx="-72" cy="12" r="8" fill="#eb8d82"/>
+                    <circle cx="72" cy="12" r="8" fill="#ebd079"/>
+                    <!-- Silhuetas infantis brincando sob a árvore -->
+                    <line x1="-28" y1="-2" x2="-28" y2="38" stroke="#e486b5" stroke-width="2"/>
+                    <line x1="-16" y1="-2" x2="-16" y2="38" stroke="#e486b5" stroke-width="2"/>
+                    <rect x="-32" y="36" width="20" height="4" rx="2" fill="#e486b5"/>
+                    <circle cx="-22" cy="24" r="6" fill="#e486b5"/>
+                    <circle cx="-68" cy="48" r="6" fill="#e486b5"/>
+                    <path d="M-74 56 L-62 56 L-64 78 L-72 78 Z" fill="#e486b5"/>
+                    <circle cx="52" cy="46" r="6" fill="#e486b5"/>
+                    <path d="M46 54 L58 54 L56 78 L48 78 Z" fill="#e486b5"/>
+                    <circle cx="82" cy="52" r="6" fill="#64b2cf"/>
+                    <circle cx="80" cy="70" r="9" stroke="#64b2cf" stroke-width="3" fill="none"/>
+                    <!-- Tronco e Galhos Dourados -->
+                    <path d="M-95 82 Q-10 74 -4 25 Q-35 -5 -78 -12 Q-30 -8 0 12 Q8 -28 -15 -55 Q15 -28 12 12 Q45 -10 85 -14 Q42 5 18 32 Q22 74 95 82 Z" fill="url(#goldGrad)"/>
+                </g>
+                <!-- Tipografia Elegante inspirada na imagem original -->
+                <text x="300" y="272" font-family="Georgia, serif" font-size="44" font-weight="400" fill="url(#goldGrad)" text-anchor="middle" letter-spacing="1">Alessandra Medeiros</text>
+                <text x="300" y="308" font-family="sans-serif" font-size="14" font-weight="600" letter-spacing="7" fill="#5b9bb3" text-anchor="middle">FISIOTERAPEUTA PEDIÁTRICA</text>
             </svg>
         `);
 
@@ -136,7 +152,7 @@
         };
 
         // =========================================================================
-        // 2. ESTRUTURA DE DADOS PADRÃO (CLÍNICA + CONTROLE SAAS DO DESENVOLVEDOR)
+        // 2. ESTRUTURA DE DADOS PADRÃO
         // =========================================================================
         function getDefaultMasterSaasData() {
             return {
@@ -174,7 +190,7 @@
                 config: {
                     name: slug === 'demo' ? "Alessandra Medeiros" : `Clínica ${slug.toUpperCase()}`,
                     ownerName: slug === 'demo' ? "Dra. Alessandra Medeiros" : `Proprietário ${slug}`,
-                    subtitle: "Fisioterapeuta Pediátrica & Reabilitação Integrada",
+                    subtitle: "Fisioterapeuta Pediátrica",
                     crefito: "CREFITO-10 / 123456-F",
                     cnpj: "12.345.678/0001-99",
                     slogan: "Atendimento humanizado e especializado no desenvolvimento motor infantil e reabilitação.",
@@ -193,6 +209,10 @@
                     pixKey: "financeiro@fisio.com",
                     workingHours: "Seg a Sex: 08:00 às 19:00 • Sáb: 08:00 às 12:00",
                     logoUrl: DEFAULT_LOGO_SVG,
+                    // NOVAS OPÇÕES DE EXIBIÇÃO DA LOGO NO TOPO:
+                    logoDisplayMode: "full_banner", // 'full_banner' (Preenche todo o topo) | 'card' (Fotinho quadrada)
+                    logoBannerBgColor: "#fbf7f4",   // Cor de fundo da parte superior quando em modo full_banner (combina com a logo)
+                    hideTitleWhenFullLogo: false,   // Permite ocultar ou exibir o nome em texto abaixo do banner da logo
                     coverUrl: "https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&q=80&w=1200",
                     themeColor: "gold",
                     darkMode: false,
@@ -204,16 +224,13 @@
                         showHomework: true,
                         allowPrintMirror: true
                     },
-                    // ==============================================================
-                    // CONTROLE SOBERANO DO DESENVOLVEDOR (SOBRESCREVE O PROPRIETÁRIO)
-                    // ==============================================================
                     saasSubscription: {
                         planName: "Plano Pro Completo",
                         planValue: 149.90,
                         billingCycle: "Mensal",
                         paymentMethod: "PIX Mensal",
                         dueDate: nextMonthStr,
-                        status: "Ativo", // Ativo | Pendente | Atrasado | Bloqueado
+                        status: "Ativo",
                         notes: "Cliente desde Outubro/2026"
                     },
                     masterAllowedScreens: {
@@ -308,18 +325,16 @@
 
         let dbData = getDefaultData(storeId);
         let masterSaasData = getDefaultMasterSaasData();
-        let allClinicsList = []; // Lista carregada do Supabase [{ store_id, data, updated_at }]
-        let currentSession = null; // { role: 'owner' | 'patient' | 'master', user: {...} }
+        let allClinicsList = [];
+        let currentSession = null;
 
-        // Estados de Navegação
         let ownerTab = 'agenda';
         let agendaViewMode = 'week';
         let agendaBaseDate = new Date().toISOString().split('T')[0];
         let selectedPatientIdForDetail = null;
         let financeFilterPatientId = 'all';
 
-        // Estados do Painel Master do Desenvolvedor
-        let masterTab = 'clinics'; // clinics | saas_finance | payment_methods
+        let masterTab = 'clinics';
         let masterSearchQuery = '';
         let masterStatusFilter = 'all';
 
@@ -335,6 +350,9 @@
                     ...(raw.config || {}),
                     ownerName: raw.config?.ownerName || raw.config?.name || def.config.ownerName,
                     logoUrl: raw.config?.logoUrl || def.config.logoUrl,
+                    logoDisplayMode: raw.config?.logoDisplayMode || def.config.logoDisplayMode,
+                    logoBannerBgColor: raw.config?.logoBannerBgColor || def.config.logoBannerBgColor,
+                    hideTitleWhenFullLogo: Boolean(raw.config?.hideTitleWhenFullLogo),
                     specialties: Array.isArray(raw.config?.specialties)
                         ? raw.config.specialties
                         : (typeof raw.config?.specialties === 'string'
@@ -366,7 +384,7 @@
         }
 
         async function loadClinicData() {
-            const localRaw = localStorage.getItem(`fisio_v5_${storeId}`);
+            const localRaw = localStorage.getItem(`fisio_v6_${storeId}`);
             if (localRaw) {
                 try { dbData = ensureDataIntegrity(JSON.parse(localRaw), storeId); } catch(e) {}
             }
@@ -381,7 +399,7 @@
                     const rows = await res.json();
                     if (rows && rows.length > 0 && rows[0].data) {
                         dbData = ensureDataIntegrity(rows[0].data, storeId);
-                        localStorage.setItem(`fisio_v5_${storeId}`, JSON.stringify(dbData));
+                        localStorage.setItem(`fisio_v6_${storeId}`, JSON.stringify(dbData));
                     } else {
                         await saveClinicData();
                     }
@@ -395,7 +413,7 @@
         }
 
         async function saveClinicData(customSlug = storeId, customData = dbData) {
-            localStorage.setItem(`fisio_v5_${customSlug}`, JSON.stringify(customData));
+            localStorage.setItem(`fisio_v6_${customSlug}`, JSON.stringify(customData));
             if (customSlug === storeId) applyThemeAndColors();
             try {
                 await fetch(`${SUPABASE_URL}/rest/v1/fisio_data`, {
@@ -418,9 +436,8 @@
             }
         }
 
-        // Busca TODAS as clínicas do Supabase + configurações do Desenvolvedor Master
         async function loadAllClinicsForMaster() {
-            const localMaster = localStorage.getItem(`fisio_v5_${MASTER_CONFIG_ID}`);
+            const localMaster = localStorage.getItem(`fisio_v6_${MASTER_CONFIG_ID}`);
             if (localMaster) {
                 try { masterSaasData = ensureMasterIntegrity(JSON.parse(localMaster)); } catch(e) {}
             }
@@ -433,7 +450,7 @@
                     const masterRow = rows.find(r => r.store_id === MASTER_CONFIG_ID);
                     if (masterRow && masterRow.data) {
                         masterSaasData = ensureMasterIntegrity(masterRow.data);
-                        localStorage.setItem(`fisio_v5_${MASTER_CONFIG_ID}`, JSON.stringify(masterSaasData));
+                        localStorage.setItem(`fisio_v6_${MASTER_CONFIG_ID}`, JSON.stringify(masterSaasData));
                     } else {
                         await saveMasterSaasData();
                     }
@@ -446,20 +463,18 @@
                             data: ensureDataIntegrity(r.data, r.store_id)
                         }));
 
-                    // Se não houver nenhuma clínica no banco ainda, inclui a atual
                     if (allClinicsList.length === 0) {
                         allClinicsList = [{ store_id: storeId, updated_at: new Date().toISOString(), data: dbData }];
                     }
                 }
             } catch (err) {
-                console.warn("Erro ao buscar todas as clínicas no Supabase:", err);
                 allClinicsList = [{ store_id: storeId, updated_at: new Date().toISOString(), data: dbData }];
             }
             renderApp();
         }
 
         async function saveMasterSaasData() {
-            localStorage.setItem(`fisio_v5_${MASTER_CONFIG_ID}`, JSON.stringify(masterSaasData));
+            localStorage.setItem(`fisio_v6_${MASTER_CONFIG_ID}`, JSON.stringify(masterSaasData));
             await saveClinicData(MASTER_CONFIG_ID, masterSaasData);
         }
 
@@ -512,7 +527,6 @@
             };
         }
 
-        // Retorna as abas permitidas pelo Desenvolvedor Master para o Proprietário
         function getAllowedOwnerTabs() {
             const allowed = dbData.config.masterAllowedScreens || {
                 agenda: true, patients: true, evolutions: true, finance: true, staff: true, settings: true
@@ -526,9 +540,7 @@
                 { id: 'settings',   icon: 'fa-sliders',       label: 'Logo, Cores & Site' }
             ];
             return allItems.filter(item => {
-                // O Desenvolvedor Master tem soberania total sobre as telas:
                 if (allowed[item.id] === false) return false;
-                // Se o Master liberou 'staff', verifica também se está habilitado na clínica:
                 if (item.id === 'staff' && !dbData.config.enableStaffModule) return false;
                 return true;
             });
@@ -540,7 +552,6 @@
         function renderApp() {
             const app = document.getElementById('app');
 
-            // Verifica se a clínica foi Bloqueada pelo Desenvolvedor Master (exceto se o próprio Master estiver logado)
             if (dbData.config.saasSubscription?.status === 'Bloqueado' && currentSession?.role !== 'master') {
                 app.innerHTML = renderSuspendedClinicScreen();
                 return;
@@ -582,7 +593,7 @@
         }
 
         // =========================================================================
-        // 5. TELA INICIAL MOBILE-FIRST LUXURY
+        // 5. TELA INICIAL COM 2 MODOS DE EXIBIÇÃO DA LOGO (FULL BANNER OU FOTINHO CARD)
         // =========================================================================
         function renderSplitLandingScreen() {
             const cfg = dbData.config;
@@ -591,8 +602,80 @@
                 ? `(${cleanPhone.slice(0,2)}) ${cleanPhone.slice(2,7)}-${cleanPhone.slice(7)}`
                 : cfg.phone;
 
+            const isFullBanner = cfg.logoDisplayMode === 'full_banner';
+            const bannerBg = cfg.logoBannerBgColor || '#fbf7f4';
+
             return `
                 <div class="flex-1 flex flex-col lg:flex-row w-full">
+                    
+                    ${isFullBanner ? `
+                    <!-- =================================================================== -->
+                    <!-- MODO 1: LOGO PREENCHENDO TODA A PARTE SUPERIOR (BANNER PANORÂMICO) -->
+                    <!-- =================================================================== -->
+                    <section class="w-full lg:w-7/12 relative overflow-hidden flex flex-col justify-between shrink-0 border-b lg:border-b-0 lg:border-r border-slate-200 dark:border-slate-800">
+                        
+                        <!-- Topo inteiramente preenchido pela Logo da Clínica com a cor de fundo da arte -->
+                        <div class="w-full relative flex flex-col items-center justify-center px-3 pt-3 pb-4 sm:px-8 sm:pt-6 sm:pb-6 transition-colors" style="background-color: ${bannerBg};">
+                            <!-- Pílulas Superiores Discretas Sobre o Topo -->
+                            <div class="w-full max-w-2xl flex items-center justify-between gap-2 mb-2 z-10">
+                                <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-900/80 text-white backdrop-blur-md text-[10px] sm:text-[11px] font-semibold max-w-[65%] truncate shadow-sm">
+                                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse shrink-0"></span>
+                                    <span class="truncate">${cfg.workingHours}</span>
+                                </div>
+                                <span class="px-2.5 py-1 rounded-full bg-slate-900/80 text-amber-300 backdrop-blur-md text-[10px] sm:text-[11px] font-bold shrink-0 shadow-sm">
+                                    <i class="fa-solid fa-certificate mr-1"></i>${cfg.crefito}
+                                </span>
+                            </div>
+
+                            <!-- Imagem da Logo Grande Preenchendo Toda a Área Superior Sem Cortes -->
+                            <div class="w-full max-w-2xl flex items-center justify-center py-1 sm:py-3">
+                                <img src="${cfg.logoUrl || DEFAULT_LOGO_SVG}" alt="Logo ${cfg.name}" class="w-full h-auto max-h-[250px] sm:max-h-[320px] lg:max-h-[360px] object-contain mx-auto drop-shadow-sm">
+                            </div>
+                        </div>
+
+                        <!-- Faixa Inferior de Informações da Clínica (Slogan, Especialidades e Contato) -->
+                        <div class="w-full bg-slate-900 text-white px-5 pt-5 pb-11 sm:px-10 sm:pt-6 sm:pb-12 flex-1 flex flex-col justify-between relative">
+                            <div class="my-auto text-center lg:text-left">
+                                ${!cfg.hideTitleWhenFullLogo ? `
+                                <span class="inline-block px-3 py-0.5 rounded-full bg-brand-soft border border-amber-500/30 text-brand text-[10px] font-extrabold uppercase tracking-widest mb-1.5">
+                                    ${cfg.subtitle}
+                                </span>
+                                <h1 class="text-xl sm:text-2xl lg:text-3xl font-extrabold tracking-tight text-white leading-tight">
+                                    ${cfg.name}
+                                </h1>` : ''}
+                                <p class="text-slate-300 text-xs sm:text-sm ${!cfg.hideTitleWhenFullLogo ? 'mt-1.5' : ''} max-w-xl mx-auto lg:mx-0 leading-relaxed">
+                                    ${cfg.slogan}
+                                </p>
+
+                                <!-- Especialidades -->
+                                <div class="w-full mt-4">
+                                    <p class="text-[10px] uppercase tracking-widest text-slate-400 font-bold mb-2">Especialidades & Áreas de Cuidado</p>
+                                    <div class="flex flex-wrap justify-center lg:justify-start gap-1.5">
+                                        ${cfg.specialties.map(spec => `
+                                            <span class="px-3 py-1 rounded-xl bg-white/10 border border-white/15 text-[11px] font-semibold text-slate-100 flex items-center gap-1.5">
+                                                <i class="fa-solid fa-sparkles text-brand text-[9px]"></i> ${spec}
+                                            </span>
+                                        `).join('')}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Endereço e WhatsApp -->
+                            <div class="mt-5 pt-3.5 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-slate-300">
+                                <div class="flex items-center gap-1.5 text-center sm:text-left">
+                                    <i class="fa-solid fa-location-dot text-brand"></i>
+                                    <span>${cfg.address}</span>
+                                </div>
+                                <a href="https://wa.me/55${cleanPhone}" target="_blank" class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-emerald-500/20 border border-emerald-500/30 text-emerald-300 hover:bg-emerald-500/30 font-bold transition">
+                                    <i class="fa-brands fa-whatsapp text-sm"></i> ${formattedPhone}
+                                </a>
+                            </div>
+                        </div>
+                    </section>
+                    ` : `
+                    <!-- =================================================================== -->
+                    <!-- MODO 2: LOGO EM CARD / FOTINHO QUADRADA CENTRALIZADA               -->
+                    <!-- =================================================================== -->
                     <section class="w-full lg:w-7/12 relative overflow-hidden bg-slate-900 text-white px-5 pt-7 pb-12 sm:p-10 lg:p-14 flex flex-col justify-between shrink-0">
                         <div class="absolute inset-0 z-0 opacity-25 bg-cover bg-center" style="background-image: url('${cfg.coverUrl}')"></div>
                         <div class="absolute inset-0 z-0 bg-gradient-to-b lg:bg-gradient-to-br from-slate-950/90 via-slate-900/90 to-slate-950"></div>
@@ -648,7 +731,9 @@
                             </a>
                         </div>
                     </section>
+                    `}
 
+                    <!-- SEÇÃO DE LOGIN DO PACIENTE (EMBAIXO NO CELULAR / DIREITA NO PC) -->
                     <section class="w-full lg:w-5/12 bg-slate-100 dark:bg-slate-950 flex flex-col justify-center items-center px-4 pb-8 pt-0 sm:p-8 lg:p-12 -mt-6 lg:mt-0 relative z-20">
                         <div class="w-full max-w-md bg-white dark:bg-slate-900 border border-slate-200/90 dark:border-slate-800 rounded-3xl p-6 sm:p-8 shadow-2xl">
                             <div class="flex items-center justify-between pb-4 mb-5 border-b border-slate-100 dark:border-slate-800">
@@ -771,7 +856,7 @@
                     <header class="bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 px-4 sm:px-6 py-3.5 sticky top-0 z-30 shadow-sm">
                         <div class="max-w-6xl mx-auto flex items-center justify-between gap-3">
                             <div class="flex items-center gap-3 min-w-0">
-                                <img src="${dbData.config.logoUrl || DEFAULT_LOGO_SVG}" class="w-11 h-11 rounded-2xl object-contain bg-white border border-slate-200 p-1 shrink-0">
+                                <img src="${dbData.config.logoUrl || DEFAULT_LOGO_SVG}" class="w-12 h-11 rounded-2xl object-contain bg-white border border-slate-200 p-1 shrink-0">
                                 <div class="min-w-0">
                                     <span class="text-[10px] font-extrabold text-brand uppercase tracking-wider block truncate">${dbData.config.name}</span>
                                     <h2 class="text-sm sm:text-base font-extrabold text-slate-900 dark:text-white truncate">${pat.name}</h2>
@@ -917,13 +1002,12 @@
         }
 
         // =========================================================================
-        // 7. PAINEL DO PROPRIETÁRIO / FISIOTERAPEUTA (OBEDECE AO BLOQUEIO DO MASTER)
+        // 7. PAINEL DO PROPRIETÁRIO / FISIOTERAPEUTA
         // =========================================================================
         function renderOwnerDashboardScreen() {
             const cfg = dbData.config;
             const navItems = getAllowedOwnerTabs();
 
-            // Se a aba atual foi bloqueada pelo Desenvolvedor Master, redireciona para a primeira liberada
             if (navItems.length > 0 && !navItems.some(i => i.id === ownerTab)) {
                 ownerTab = navItems[0].id;
             }
@@ -968,7 +1052,7 @@
                     <main class="flex-1 p-4 sm:p-6 lg:p-8 max-w-full overflow-x-hidden">
                         ${currentSession.impersonatedByMaster ? `
                         <div class="mb-4 p-3 rounded-2xl bg-amber-500/15 border border-amber-500/40 flex flex-wrap items-center justify-between gap-2 text-xs">
-                            <span class="font-bold text-amber-600 dark:text-amber-400"><i class="fa-solid fa-shield-halved mr-1"></i> Modo Desenvolvedor Ativo: Você está acessando e gerenciando a clínica <b>${cfg.name} (?clinica=${storeId})</b>.</span>
+                            <span class="font-bold text-amber-600 dark:text-amber-400"><i class="fa-solid fa-shield-halved mr-1"></i> Modo Desenvolvedor Ativo: Gerenciando <b>${cfg.name} (?clinica=${storeId})</b>.</span>
                             <button onclick="returnToMasterFromImpersonation()" class="px-3 py-1 rounded-lg bg-amber-500 text-slate-950 font-extrabold">Voltar para Todas as Clínicas</button>
                         </div>` : ''}
                         ${navItems.length === 0 ? `<div class="p-8 text-center bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 text-sm font-bold text-rose-500">Nenhuma tela foi habilitada pelo Desenvolvedor para este acesso.</div>` : renderOwnerTabBody()}
@@ -1381,23 +1465,64 @@
                     <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-5 sm:p-6 rounded-2xl space-y-5">
                         <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-4">
                             <div>
-                                <h2 class="text-base sm:text-lg font-extrabold text-slate-900 dark:text-white">Logo da Clínica, Cores & Áreas</h2>
-                                <p class="text-xs text-slate-500">A logo aparece em destaque no topo do celular e nos espelhos impressos</p>
+                                <h2 class="text-base sm:text-lg font-extrabold text-slate-900 dark:text-white">Logo da Clínica, Estilo do Topo & Cores</h2>
+                                <p class="text-xs text-slate-500">Escolha se a sua logo deve preencher todo o topo da tela ou ficar como fotinho centralizada</p>
                             </div>
-                            <button type="submit" class="bg-brand-gradient text-white text-xs font-bold px-5 py-2.5 rounded-xl shadow">Salvar</button>
+                            <button type="submit" class="bg-brand-gradient text-white text-xs font-bold px-5 py-2.5 rounded-xl shadow">Salvar Tudo</button>
                         </div>
 
+                        <!-- Upload e Preview da Logo -->
                         <div class="flex flex-col sm:flex-row items-center gap-5 p-4 rounded-2xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800">
-                            <div class="w-36 h-28 rounded-2xl bg-white border border-slate-200 p-2 flex items-center justify-center shrink-0 shadow">
+                            <div id="settings-logo-box" class="w-48 h-32 rounded-2xl border border-slate-200 p-2 flex items-center justify-center shrink-0 shadow overflow-hidden" style="background-color: ${cfg.logoBannerBgColor || '#fbf7f4'};">
                                 <img id="settings-logo-preview" src="${cfg.logoUrl || DEFAULT_LOGO_SVG}" class="max-w-full max-h-full object-contain">
                             </div>
                             <div class="flex-1 space-y-2.5 w-full">
-                                <label class="block text-xs font-bold">Subir Imagem da Logo (Galeria / Computador):</label>
+                                <label class="block text-xs font-bold">Subir Imagem da Logo (Alta Nitidez — Galeria / Computador):</label>
                                 <input type="file" accept="image/*" onchange="handleLogoFileUpload(event)" class="block w-full text-xs text-slate-500 file:mr-3 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-amber-500/15 file:text-amber-600">
                                 <div class="flex gap-2">
                                     <input type="text" id="cfg-logo-url" value="${cfg.logoUrl.startsWith('data:image/svg') ? '' : cfg.logoUrl}" placeholder="Ou cole URL da imagem..." class="flex-1 bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl px-3 py-2 text-xs">
-                                    <button type="button" onclick="resetDefaultPediatricLogo()" class="px-3 py-2 rounded-xl bg-slate-200 dark:bg-slate-800 text-xs font-semibold">Padrão</button>
+                                    <button type="button" onclick="resetDefaultPediatricLogo()" class="px-3 py-2 rounded-xl bg-slate-200 dark:bg-slate-800 text-xs font-semibold">Logo Padrão</button>
                                 </div>
+                            </div>
+                        </div>
+
+                        <!-- NOVO: SELETOR DE MODO DE EXIBIÇÃO DA LOGO NA TELA INICIAL -->
+                        <div class="p-4 rounded-2xl bg-brand-soft border border-amber-500/30 space-y-3 text-xs">
+                            <h3 class="font-extrabold text-slate-900 dark:text-white flex items-center gap-2">
+                                <i class="fa-solid fa-wand-magic-sparkles text-brand"></i> Como você deseja exibir a Logo na Tela Inicial?
+                            </h3>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                <label class="flex items-start gap-3 p-3.5 rounded-xl bg-white dark:bg-slate-900 border-2 ${cfg.logoDisplayMode === 'full_banner' ? 'border-amber-500' : 'border-slate-200 dark:border-slate-800'} cursor-pointer">
+                                    <input type="radio" name="logo_mode" id="mode-full-banner" value="full_banner" ${cfg.logoDisplayMode === 'full_banner' ? 'checked' : ''} class="mt-0.5 w-4 h-4">
+                                    <div>
+                                        <strong class="block text-slate-900 dark:text-white">🌟 Logo Grande Preenchendo Todo o Topo</strong>
+                                        <span class="text-[11px] text-slate-500">A parte superior fica inteira com a arte da sua logo alinhada e mostrando todos os detalhes.</span>
+                                    </div>
+                                </label>
+                                <label class="flex items-start gap-3 p-3.5 rounded-xl bg-white dark:bg-slate-900 border-2 ${cfg.logoDisplayMode === 'card' ? 'border-amber-500' : 'border-slate-200 dark:border-slate-800'} cursor-pointer">
+                                    <input type="radio" name="logo_mode" id="mode-card" value="card" ${cfg.logoDisplayMode === 'card' ? 'checked' : ''} class="mt-0.5 w-4 h-4">
+                                    <div>
+                                        <strong class="block text-slate-900 dark:text-white">🖼️ Fotinho / Emblema Centralizado</strong>
+                                        <span class="text-[11px] text-slate-500">Exibe a logo dentro de um card quadrado acima do nome da clínica no fundo escuro.</span>
+                                    </div>
+                                </label>
+                            </div>
+
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
+                                <div class="flex items-center justify-between p-3 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
+                                    <div>
+                                        <strong class="block text-slate-800 dark:text-slate-200">Cor de Fundo do Topo da Logo</strong>
+                                        <span class="text-[10px] text-slate-400">Para combinar perfeitamente com o fundo da sua imagem</span>
+                                    </div>
+                                    <input type="color" id="cfg-banner-bg" value="${cfg.logoBannerBgColor || '#fbf7f4'}" onchange="document.getElementById('settings-logo-box').style.backgroundColor=this.value" class="w-10 h-9 rounded-lg cursor-pointer border-0">
+                                </div>
+                                <label class="flex items-center gap-3 p-3 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 cursor-pointer">
+                                    <input type="checkbox" id="cfg-hide-title" ${cfg.hideTitleWhenFullLogo ? 'checked' : ''} class="w-4 h-4">
+                                    <div>
+                                        <strong class="block text-slate-800 dark:text-slate-200">Ocultar título repetido embaixo</strong>
+                                        <span class="text-[10px] text-slate-400">Ideal quando a sua logo já possui o nome da clínica escrito</span>
+                                    </div>
+                                </label>
                             </div>
                         </div>
 
@@ -1477,7 +1602,6 @@
                                 <span>Paciente vê Financeiro</span>
                             </label>` : ''}
 
-                            <!-- Se o Desenvolvedor Master bloqueou Funcionários, o proprietário NÃO vê nem controla este switch -->
                             ${masterAllowed.staff !== false ? `
                             <label class="flex items-center gap-3 p-3 rounded-xl bg-brand-soft border border-amber-500/30">
                                 <input type="checkbox" id="cfg-staff-module" ${cfg.enableStaffModule ? 'checked' : ''} class="w-4 h-4">
@@ -1490,6 +1614,7 @@
             `;
         }
 
+        // Upload de Logo em Alta Resolução (Até 1200px para ficar nítida no Banner Superior)
         function handleLogoFileUpload(event) {
             const file = event.target.files[0];
             if (!file) return;
@@ -1498,7 +1623,7 @@
                 const img = new Image();
                 img.onload = function() {
                     const canvas = document.createElement('canvas');
-                    const maxDim = 380;
+                    const maxDim = 1200;
                     let w = img.width, h = img.height;
                     if (w > maxDim || h > maxDim) {
                         if (w > h) { h = Math.round(h * (maxDim / w)); w = maxDim; }
@@ -1507,7 +1632,21 @@
                     canvas.width = w; canvas.height = h;
                     const ctx = canvas.getContext('2d');
                     ctx.drawImage(img, 0, 0, w, h);
-                    const dataUrl = canvas.toDataURL('image/png', 0.9);
+
+                    // Detecta automaticamente a cor do canto da logo para sugerir como cor de fundo do banner
+                    try {
+                        const pixel = ctx.getImageData(2, 2, 1, 1).data;
+                        if (pixel[3] > 200) {
+                            const hex = "#" + [pixel[0], pixel[1], pixel[2]].map(x => x.toString(16).padStart(2, '0')).join('');
+                            dbData.config.logoBannerBgColor = hex;
+                            const bgInput = document.getElementById('cfg-banner-bg');
+                            if (bgInput) bgInput.value = hex;
+                            const box = document.getElementById('settings-logo-box');
+                            if (box) box.style.backgroundColor = hex;
+                        }
+                    } catch(err) {}
+
+                    const dataUrl = canvas.toDataURL('image/png', 0.92);
                     dbData.config.logoUrl = dataUrl;
                     document.getElementById('settings-logo-preview').src = dataUrl;
                     document.getElementById('cfg-logo-url').value = dataUrl;
@@ -1519,14 +1658,22 @@
 
         function resetDefaultPediatricLogo() {
             dbData.config.logoUrl = DEFAULT_LOGO_SVG;
+            dbData.config.logoBannerBgColor = '#fbf7f4';
             document.getElementById('settings-logo-preview').src = DEFAULT_LOGO_SVG;
             document.getElementById('cfg-logo-url').value = '';
+            const bgInput = document.getElementById('cfg-banner-bg');
+            if (bgInput) bgInput.value = '#fbf7f4';
         }
 
         function saveAllClinicSettings(e) {
             e.preventDefault();
             const customUrl = document.getElementById('cfg-logo-url').value.trim();
             if (customUrl) dbData.config.logoUrl = customUrl;
+
+            const isFullBanner = document.getElementById('mode-full-banner').checked;
+            dbData.config.logoDisplayMode = isFullBanner ? 'full_banner' : 'card';
+            dbData.config.logoBannerBgColor = document.getElementById('cfg-banner-bg').value || '#fbf7f4';
+            dbData.config.hideTitleWhenFullLogo = document.getElementById('cfg-hide-title').checked;
 
             dbData.config.name = document.getElementById('cfg-name').value.trim();
             dbData.config.subtitle = document.getElementById('cfg-subtitle').value.trim();
@@ -1562,7 +1709,7 @@
         }
 
         // =========================================================================
-        // 8. CENTRO DE COMANDO DO DESENVOLVEDOR MASTER (SAAS MULTI-CLÍNICAS)
+        // 8. CENTRO DE COMANDO DO DESENVOLVEDOR MASTER
         // =========================================================================
         function renderMasterDevScreen() {
             const totalClinics = allClinicsList.length;
@@ -1580,7 +1727,6 @@
 
             return `
                 <div class="flex-1 flex flex-col lg:flex-row bg-slate-950 text-slate-100 min-h-0">
-                    <!-- Menu Lateral do Desenvolvedor Master -->
                     <aside class="w-full lg:w-68 bg-slate-900 border-b lg:border-b-0 lg:border-r border-slate-800 flex flex-col shrink-0">
                         <div class="p-5 border-b border-slate-800 flex items-center justify-between">
                             <div class="flex items-center gap-3">
@@ -1620,9 +1766,7 @@
                         </div>
                     </aside>
 
-                    <!-- Conteúdo Principal do Desenvolvedor -->
                     <main class="flex-1 p-4 sm:p-6 lg:p-8 overflow-y-auto space-y-6">
-                        <!-- KPIs Globais do Desenvolvedor -->
                         <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
                             <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 sm:p-5">
                                 <span class="text-[10px] font-bold uppercase text-slate-400">Clínicas Cadastradas</span>
@@ -1653,9 +1797,6 @@
             `;
         }
 
-        // =========================================================================
-        // 8.1 ABA MASTER: GESTÃO COMPLETA DE CLÍNICAS, PROPRIETÁRIOS E TELAS
-        // =========================================================================
         function renderMasterClinicsTab() {
             const filtered = allClinicsList.filter(item => {
                 const cfg = item.data.config;
@@ -1682,7 +1823,6 @@
 
             return `
                 <div class="space-y-5">
-                    <!-- Barra de Ações e Busca de Clínicas -->
                     <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 flex flex-col md:flex-row md:items-center justify-between gap-4">
                         <div>
                             <h2 class="text-lg font-extrabold text-white">Gestão de Clínicas, Proprietários & Permissões de Tela</h2>
@@ -1693,7 +1833,6 @@
                         </button>
                     </div>
 
-                    <!-- Filtros -->
                     <div class="flex flex-col sm:flex-row gap-3">
                         <div class="relative flex-1">
                             <i class="fa-solid fa-magnifying-glass absolute left-4 top-3.5 text-slate-500 text-xs"></i>
@@ -1708,7 +1847,6 @@
                         </select>
                     </div>
 
-                    <!-- Cards Completos de Cada Clínica Cadastrada -->
                     <div class="grid grid-cols-1 xl:grid-cols-2 gap-4">
                         ${filtered.map(item => {
                             const slug = item.store_id;
@@ -1722,7 +1860,6 @@
                             return `
                                 <div class="bg-slate-900 border ${sub.status === 'Bloqueado' ? 'border-rose-500/50' : 'border-slate-800'} rounded-2xl p-5 flex flex-col justify-between gap-4 shadow-lg">
                                     <div class="space-y-3">
-                                        <!-- Topo do Card -->
                                         <div class="flex items-start justify-between gap-3 border-b border-slate-800 pb-3">
                                             <div class="flex items-center gap-3 min-w-0">
                                                 <img src="${cfg.logoUrl || DEFAULT_LOGO_SVG}" class="w-12 h-12 rounded-xl object-contain bg-white p-1 shrink-0">
@@ -1746,7 +1883,6 @@
                                             </div>
                                         </div>
 
-                                        <!-- Dados Cadastrais + Login/Senha do Proprietário -->
                                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 bg-slate-950 border border-slate-800/90 rounded-xl p-3.5 text-xs">
                                             <div>
                                                 <p class="text-slate-400">CNPJ/CPF: <strong class="text-slate-200">${cfg.cnpj || '-'}</strong></p>
@@ -1763,7 +1899,6 @@
                                             </div>
                                         </div>
 
-                                        <!-- Controle Rápido de Telas Liberadas pelo Desenvolvedor -->
                                         <div class="bg-slate-950/60 border border-slate-800 rounded-xl p-3">
                                             <div class="flex items-center justify-between mb-2">
                                                 <span class="text-[10px] font-extrabold uppercase tracking-wider text-amber-400">
@@ -1787,31 +1922,30 @@
                                         </div>
                                     </div>
 
-                                    <!-- Botões de Ação do Desenvolvedor -->
                                     <div class="pt-3 border-t border-slate-800 flex flex-wrap items-center justify-between gap-2">
                                         <div class="flex flex-wrap gap-1.5">
                                             <button onclick="openMasterClinicModal('${slug}')" class="px-3 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 text-xs font-extrabold flex items-center gap-1.5 transition">
                                                 <i class="fa-solid fa-user-pen"></i> Editar Tudo
                                             </button>
-                                            <button onclick="impersonateClinicOwner('${slug}')" class="px-3 py-2 rounded-xl bg-sky-600 hover:bg-sky-500 text-white text-xs font-bold flex items-center gap-1.5 transition" title="Entrar no painel desta clínica como proprietário">
+                                            <button onclick="impersonateClinicOwner('${slug}')" class="px-3 py-2 rounded-xl bg-sky-600 hover:bg-sky-500 text-white text-xs font-bold flex items-center gap-1.5 transition">
                                                 <i class="fa-solid fa-arrow-up-right-from-square"></i> Acessar Painel
                                             </button>
-                                            <button onclick="sendOwnerAccessWhatsApp('${slug}')" class="px-3 py-2 rounded-xl bg-emerald-600/20 hover:bg-emerald-600/30 border border-emerald-500/30 text-emerald-400 text-xs font-bold flex items-center gap-1.5 transition" title="Enviar link, login e senha para o proprietário">
+                                            <button onclick="sendOwnerAccessWhatsApp('${slug}')" class="px-3 py-2 rounded-xl bg-emerald-600/20 hover:bg-emerald-600/30 border border-emerald-500/30 text-emerald-400 text-xs font-bold flex items-center gap-1.5 transition">
                                                 <i class="fa-brands fa-whatsapp"></i> Enviar Login
                                             </button>
-                                            <button onclick="sendSaasBillingWhatsApp('${slug}')" class="px-3 py-2 rounded-xl bg-amber-500/15 hover:bg-amber-500/25 border border-amber-500/30 text-amber-300 text-xs font-bold flex items-center gap-1.5 transition" title="Cobrar mensalidade no WhatsApp">
+                                            <button onclick="sendSaasBillingWhatsApp('${slug}')" class="px-3 py-2 rounded-xl bg-amber-500/15 hover:bg-amber-500/25 border border-amber-500/30 text-amber-300 text-xs font-bold flex items-center gap-1.5 transition">
                                                 <i class="fa-solid fa-hand-holding-dollar"></i> Cobrar
                                             </button>
                                         </div>
                                         <div class="flex items-center gap-1">
-                                            <button onclick="navigator.clipboard.writeText('${clinicUrl}'); alert('Link copiado: ${clinicUrl}');" class="p-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs" title="Copiar Link da Clínica">
+                                            <button onclick="navigator.clipboard.writeText('${clinicUrl}'); alert('Link copiado: ${clinicUrl}');" class="p-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs" title="Copiar Link">
                                                 <i class="fa-solid fa-copy"></i>
                                             </button>
-                                            <button onclick="toggleClinicLockStatus('${slug}')" class="p-2 rounded-lg ${sub.status === 'Bloqueado' ? 'bg-emerald-500/20 text-emerald-400' : 'bg-rose-500/15 text-rose-400'} text-xs" title="${sub.status === 'Bloqueado' ? 'Desbloquear Clínica' : 'Bloquear Clínica'}">
+                                            <button onclick="toggleClinicLockStatus('${slug}')" class="p-2 rounded-lg ${sub.status === 'Bloqueado' ? 'bg-emerald-500/20 text-emerald-400' : 'bg-rose-500/15 text-rose-400'} text-xs">
                                                 <i class="fa-solid ${sub.status === 'Bloqueado' ? 'fa-lock-open' : 'fa-lock'}"></i>
                                             </button>
                                             ${slug !== 'demo' ? `
-                                            <button onclick="deleteClinicFromSupabase('${slug}')" class="p-2 rounded-lg text-rose-500 hover:bg-rose-500/15 text-xs" title="Excluir Clínica Permanentemente">
+                                            <button onclick="deleteClinicFromSupabase('${slug}')" class="p-2 rounded-lg text-rose-500 hover:bg-rose-500/15 text-xs">
                                                 <i class="fa-solid fa-trash"></i>
                                             </button>` : ''}
                                         </div>
@@ -1824,13 +1958,9 @@
             `;
         }
 
-        // =========================================================================
-        // 8.2 ABA MASTER: FINANÇAS DO DESENVOLVEDOR (ASSINATURAS, PLANOS E COBRANÇAS)
-        // =========================================================================
         function renderMasterFinanceTab() {
             return `
                 <div class="space-y-6">
-                    <!-- Controle de Mensalidades e Vencimentos por Clínica -->
                     <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 space-y-4">
                         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                             <div>
@@ -1884,7 +2014,7 @@
                                                     }">${sub.status || 'Ativo'}</span>
                                                 </td>
                                                 <td class="p-3.5 text-right whitespace-nowrap space-x-1.5">
-                                                    <button onclick="registerClinicMonthlyPayment('${slug}')" class="px-3 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-[11px]" title="Confirmar pagamento e renovar vencimento para o próximo mês">
+                                                    <button onclick="registerClinicMonthlyPayment('${slug}')" class="px-3 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-[11px]">
                                                         <i class="fa-solid fa-check mr-1"></i> Receber + Renovar
                                                     </button>
                                                     <button onclick="sendSaasBillingWhatsApp('${slug}')" class="px-3 py-1.5 rounded-xl bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 font-bold text-[11px]">
@@ -1902,7 +2032,6 @@
                         </div>
                     </div>
 
-                    <!-- Histórico de Pagamentos Recebidos pelo Desenvolvedor -->
                     <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 space-y-4">
                         <h3 class="text-base font-extrabold text-white">Histórico de Mensalidades Recebidas pelo Desenvolvedor</h3>
                         <div class="divide-y divide-slate-800 text-xs">
@@ -1927,13 +2056,9 @@
             `;
         }
 
-        // =========================================================================
-        // 8.3 ABA MASTER: CADASTRO DE MÉTODOS DE PAGAMENTO E CHAVE PIX DO DEV
-        // =========================================================================
         function renderMasterPaymentMethodsTab() {
             return `
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                    <!-- Configuração de Métodos de Pagamento Aceitos pelo Desenvolvedor -->
                     <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-4">
                         <h3 class="text-base font-extrabold text-white">Métodos de Pagamento Disponíveis para as Clínicas</h3>
                         <p class="text-xs text-slate-400">Cadastre as formas de pagamento que você oferece ao vender o sistema (ex: PIX Mensal, Cartão Recorrente, Boleto, Semestral)</p>
@@ -1953,7 +2078,6 @@
                         </div>
                     </div>
 
-                    <!-- Dados de Cobrança do Desenvolvedor (PIX e Contato) -->
                     <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-4">
                         <h3 class="text-base font-extrabold text-white">Seus Dados de Recebimento (Usados nas Cobranças WhatsApp)</h3>
                         <form onsubmit="saveMasterDevProfile(event)" class="space-y-3.5 text-xs">
@@ -1978,9 +2102,6 @@
             `;
         }
 
-        // =========================================================================
-        // 8.4 FUNÇÕES DO PAINEL MASTER (CRIAR/EDITAR CLÍNICA, PERMISSÕES E COBRANÇA)
-        // =========================================================================
         function openMasterClinicModal(editSlug = null) {
             const existing = editSlug ? allClinicsList.find(c => c.store_id === editSlug) : null;
             const cfg = existing ? existing.data.config : getDefaultData('nova_clinica').config;
@@ -2006,7 +2127,6 @@
                 </div>
 
                 <form onsubmit="saveMasterClinicForm(event, ${editSlug ? `'${editSlug}'` : 'null'})" class="space-y-4 text-xs">
-                    <!-- 1. Identificação e Dados do Proprietário -->
                     <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 space-y-3">
                         <h4 class="font-extrabold text-brand uppercase text-[11px]">1. Dados Cadastrais da Clínica & Proprietário</h4>
                         <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
@@ -2041,7 +2161,6 @@
                         </div>
                     </div>
 
-                    <!-- 2. Credenciais de Acesso do Proprietário -->
                     <div class="p-4 rounded-2xl bg-amber-500/10 border border-amber-500/30 space-y-3">
                         <h4 class="font-extrabold text-amber-500 uppercase text-[11px]">2. Credenciais de Login do Proprietário na Clínica</h4>
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -2056,7 +2175,6 @@
                         </div>
                     </div>
 
-                    <!-- 3. Plano SaaS, Método de Pagamento e Vencimento -->
                     <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 space-y-3">
                         <h4 class="font-extrabold text-emerald-500 uppercase text-[11px]">3. Plano Contratado, Método de Pagamento & Vencimento</h4>
                         <div class="grid grid-cols-1 sm:grid-cols-4 gap-3">
@@ -2090,10 +2208,8 @@
                         </div>
                     </div>
 
-                    <!-- 4. Telas Liberadas pelo Desenvolvedor (Soberania Master) -->
                     <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 space-y-2.5">
                         <h4 class="font-extrabold text-slate-900 dark:text-white uppercase text-[11px]">4. Controle de Telas (O que este Proprietário pode acessar?)</h4>
-                        <p class="text-[11px] text-slate-500">Se você desmarcar uma tela abaixo, o proprietário não poderá vê-la nem ativá-la nas configurações dele.</p>
                         <div class="grid grid-cols-2 sm:grid-cols-3 gap-2.5 pt-1">
                             <label class="flex items-center gap-2 p-2.5 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 cursor-pointer">
                                 <input type="checkbox" id="ms-agenda" ${screens.agenda !== false ? 'checked' : ''} class="w-4 h-4">
@@ -2215,12 +2331,11 @@
                     method: 'DELETE',
                     headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` }
                 });
-                localStorage.removeItem(`fisio_v5_${slug}`);
+                localStorage.removeItem(`fisio_v6_${slug}`);
             } catch (e) {}
             await loadAllClinicsForMaster();
         }
 
-        // Entrar diretamente no painel de qualquer clínica como Proprietário
         function impersonateClinicOwner(slug) {
             const item = allClinicsList.find(c => c.store_id === slug);
             if (!item) return;
@@ -2262,7 +2377,6 @@
             const cfg = item.data.config;
             const sub = cfg.saasSubscription || {};
 
-            // Avança 1 mês no vencimento
             const baseDate = sub.dueDate ? new Date(sub.dueDate + "T12:00:00") : new Date();
             baseDate.setMonth(baseDate.getMonth() + 1);
             const newDue = baseDate.toISOString().split('T')[0];
@@ -2271,7 +2385,6 @@
             sub.status = 'Ativo';
             item.data.config.saasSubscription = sub;
 
-            // Registra no histórico financeiro do Desenvolvedor
             masterSaasData.billingHistory.push({
                 id: Date.now(),
                 date: new Date().toISOString().split('T')[0],
@@ -2398,7 +2511,7 @@
                 <div class="max-w-4xl mx-auto border border-slate-300 rounded-2xl p-8 space-y-6 bg-white text-slate-900">
                     <div class="flex items-center justify-between border-b-2 border-slate-800 pb-5">
                         <div class="flex items-center gap-4">
-                            <img src="${cfg.logoUrl || DEFAULT_LOGO_SVG}" class="w-24 h-20 object-contain">
+                            <img src="${cfg.logoUrl || DEFAULT_LOGO_SVG}" class="w-28 h-20 object-contain">
                             <div>
                                 <h1 class="text-xl font-extrabold uppercase">${cfg.name}</h1>
                                 <p class="text-xs font-semibold text-slate-600">${cfg.subtitle} • ${cfg.crefito}</p>
@@ -2453,7 +2566,7 @@
                 <div class="max-w-4xl mx-auto border border-slate-300 rounded-2xl p-8 space-y-6 bg-white text-slate-900">
                     <div class="flex items-center justify-between border-b-2 border-slate-800 pb-5">
                         <div class="flex items-center gap-4">
-                            <img src="${cfg.logoUrl || DEFAULT_LOGO_SVG}" class="w-24 h-20 object-contain">
+                            <img src="${cfg.logoUrl || DEFAULT_LOGO_SVG}" class="w-28 h-20 object-contain">
                             <div>
                                 <h1 class="text-xl font-extrabold uppercase">${cfg.name}</h1>
                                 <p class="text-xs font-semibold text-slate-600">${cfg.subtitle} • ${cfg.crefito}</p>
