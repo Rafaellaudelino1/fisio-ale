@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FisioCare Pro — SaaS Multi-Clínica de Fisioterapia & Reabilitação</title>
+    <title>FisioManager Pro — Sistema de Gestão para Clínicas de Fisioterapia</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome Icons -->
@@ -15,69 +15,64 @@
             darkMode: 'class',
             theme: {
                 extend: {
-                    fontFamily: { sans: ['"Plus Jakarta Sans"', 'sans-serif'] },
-                    colors: {
-                        emeraldWellness: { 50: '#ecfdf5', 500: '#10b981', 600: '#059669', 700: '#047857' },
-                        royalBlue: { 50: '#eff6ff', 500: '#3b82f6', 600: '#2563eb', 700: '#1d4ed8' },
-                        goldPrem: { 50: '#fefce8', 500: '#eab308', 600: '#ca8a04', 700: '#a16207' },
-                        silverMin: { 50: '#f8fafc', 500: '#64748b', 600: '#475569', 700: '#334155' },
-                        lavenderPilates: { 50: '#f5f3ff', 500: '#8b5cf6', 600: '#7c3aed', 700: '#6d28d9' }
-                    }
+                    fontFamily: { sans: ['"Plus Jakarta Sans"', 'sans-serif'] }
                 }
             }
         }
     </script>
     <style>
         body { font-family: 'Plus Jakarta Sans', sans-serif; }
-        .glass-panel { background: rgba(15, 23, 42, 0.75); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.1); }
-        ::-webkit-scrollbar { width: 6px; height: 6px; }
-        ::-webkit-scrollbar-track { background: #0f172a; }
-        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
+        .glass-panel { backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); }
+        @media print {
+            body { background: white !important; color: black !important; }
+            no-print, header, footer, aside, button { display: none !important; }
+            .print-only { display: block !important; }
+        }
+        .print-only { display: none; }
     </style>
 </head>
-<body class="h-full bg-slate-950 text-slate-100 antialiased selection:bg-emerald-500 selection:text-white flex flex-col">
+<body class="h-full bg-slate-950 text-slate-100 antialiased flex flex-col transition-colors duration-300" id="body-root">
 
+    <!-- Container Principal -->
     <div id="app" class="flex-1 flex flex-col min-h-0">
-        <div id="initial-loader" class="flex-1 flex flex-col items-center justify-center bg-slate-950 p-6 text-center">
-            <div class="relative w-20 h-20 mb-6">
+        <div class="flex-1 flex flex-col items-center justify-center p-6 text-center">
+            <div class="relative w-16 h-16 mb-4">
                 <div class="absolute inset-0 rounded-full border-4 border-emerald-500/20 animate-pulse"></div>
                 <div class="absolute inset-0 rounded-full border-4 border-emerald-500 border-t-transparent animate-spin"></div>
-                <div class="absolute inset-0 flex items-center justify-center text-emerald-400 text-xl font-bold">
-                    <i class="fa-solid fa-heart-pulse"></i>
-                </div>
             </div>
-            <h2 class="text-xl font-bold text-white tracking-wide">FisioCare Pro SaaS</h2>
-            <p class="text-sm text-slate-400 mt-2">Carregando ambiente da clínica em tempo real...</p>
+            <p class="text-sm text-slate-400">Carregando ambiente da clínica...</p>
         </div>
     </div>
 
-    <footer id="global-footer" class="bg-slate-900 border-t border-slate-800 py-3 px-6 text-xs text-slate-400 flex flex-col sm:flex-row items-center justify-between gap-3 shrink-0">
+    <!-- Rodapé Discreto com Acesso do Proprietário -->
+    <footer class="bg-slate-900 border-t border-slate-800 py-3 px-6 text-xs text-slate-400 flex flex-col sm:flex-row items-center justify-between gap-3 shrink-0 print:hidden">
         <div class="flex items-center gap-2">
             <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" id="connection-indicator"></span>
-            <span id="footer-clinic-name">FisioCare Pro</span> • Sistema Multi-Clínica Integrado com Supabase & Vercel
+            <span id="footer-clinic-name">FisioManager Pro</span> • Conectado ao Supabase
         </div>
         <div class="flex items-center gap-4">
             <span id="footer-store-param" class="text-slate-500">?clinica=demo</span>
-            <button onclick="openOwnerLoginModal()" class="text-slate-400 hover:text-emerald-400 transition flex items-center gap-1.5 font-medium px-2.5 py-1 rounded bg-slate-800/80 hover:bg-slate-800 border border-slate-700/60">
+            <button onclick="openOwnerLoginModal()" class="text-slate-400 hover:text-emerald-400 transition flex items-center gap-1.5 font-medium px-2.5 py-1 rounded bg-slate-800 border border-slate-700">
                 <i class="fa-solid fa-lock text-[10px]"></i> Área do Fisioterapeuta / Proprietário
             </button>
         </div>
     </footer>
 
+    <!-- Modal de Login do Proprietário / Desenvolvedor -->
     <div id="owner-login-modal" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm hidden items-center justify-center p-4">
-        <div class="bg-slate-900 border border-slate-800 rounded-2xl w-full max-w-md p-6 shadow-2xl relative">
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl w-full max-w-md p-6 shadow-2xl relative text-left">
             <button onclick="closeOwnerLoginModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
             <div class="text-center mb-6">
                 <div class="w-12 h-12 bg-emerald-500/10 text-emerald-400 rounded-xl flex items-center justify-center mx-auto mb-3 text-xl border border-emerald-500/20">
                     <i class="fa-solid fa-user-shield"></i>
                 </div>
-                <h3 class="text-lg font-bold text-white">Acesso Restrito</h3>
-                <p class="text-xs text-slate-400 mt-1">Fisioterapeuta Proprietário ou Desenvolvedor Master</p>
+                <h3 class="text-lg font-bold text-white">Acesso do Proprietário</h3>
+                <p class="text-xs text-slate-400 mt-1">Gerencie sua clínica ou acesse o painel master</p>
             </div>
             <form onsubmit="handleOwnerLogin(event)" class="space-y-4">
                 <div>
-                    <label class="block text-xs font-medium text-slate-300 mb-1">E-mail de Acesso</label>
-                    <input type="email" id="login-email" required placeholder="ex: demo@fisio.com ou Desenv@Rafael.com" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500">
+                    <label class="block text-xs font-medium text-slate-300 mb-1">E-mail</label>
+                    <input type="email" id="login-email" required placeholder="demo@fisio.com ou Desenv@Rafael.com" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500">
                 </div>
                 <div>
                     <label class="block text-xs font-medium text-slate-300 mb-1">Senha</label>
@@ -92,14 +87,14 @@
                     </button>
                 </div>
             </form>
-            <div class="mt-4 pt-4 border-t border-slate-800/80 text-center">
-                <p class="text-[11px] text-slate-500">Desenvolvedor Master: <code class="text-slate-400">Desenv@Rafael.com</code> / Senha: <code class="text-slate-400">123</code></p>
+            <div class="mt-4 pt-4 border-t border-slate-800 text-center">
+                <p class="text-[11px] text-slate-500">Master: <code class="text-slate-400">Desenv@Rafael.com</code> / Senha: <code class="text-slate-400">123</code></p>
             </div>
         </div>
     </div>
 
+    <!-- Script Principal do Sistema -->
     <script>
-        // Credenciais do Supabase configuradas com o seu projeto fisio-system
         const SUPABASE_URL = "https://bccxujolvlgjmkmmxyog.supabase.co";
         const SUPABASE_KEY = "sb_publishable_sxoMKSN-ELdj7IGutdYzAQ_3HrvHUNQ";
 
@@ -110,78 +105,56 @@
 
         document.getElementById('footer-store-param').innerText = `?clinica=${storeId}`;
 
+        // Banco de Dados em Memória (Estrutura Completa)
         let dbData = {
             config: {
-                name: storeId === 'demo' ? "FisioLife Centro de Reabilitação" : `Clínica ${storeId.charAt(0).toUpperCase() + storeId.slice(1)}`,
-                slogan: "Excelência em Fisioterapia Avançada, Movimento & Qualidade de Vida",
-                specialties: "Ortopedia • Esportiva • Pilates Clínico • RPG • Osteopatia",
-                address: "Av. Principal, 1000 - Sala 402, Centro",
-                phone: "(48) 99999-9999",
-                email: storeId === 'demo' ? "demo@fisio.com" : `${storeId}@fisio.com`,
+                name: "Alessandra Medeiros Fisioterapia Pediátrica",
+                slogan: "Desenvolvimento motor e reabilitação infantil com excelência",
+                specialties: "Fisioterapia Pediátrica • Neuropediatria • Estimulação Precoce • RPG Infantil",
+                address: "Rua das Flores, 500 - Sala 12, Centro",
+                phone: "(48) 99999-8888",
+                email: "demo@fisio.com",
                 password: "123",
-                theme: "emerald",
-                logoUrl: "",
-                coverUrl: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&q=80&w=1200",
+                theme: "emerald", // emerald, royal, gold, lavender, silver
+                darkMode: true,
+                logoUrl: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&q=80&w=400",
                 pixKey: "financeiro@fisio.com",
-                modules: { packages: true, exercises: true, eva: true, products: true, professionalsCarousel: true, demoButton: true },
-                workingHours: "Seg a Sex: 07:00 às 20:00 • Sáb: 08:00 às 13:00"
+                modules: {
+                    patientHistory: true,
+                    exercises: true,
+                    evaScale: true,
+                    finances: true,
+                    staff: true
+                }
             },
-            professionals: [
-                { id: 1, name: "Dr. Rafael Silva", crefito: "CREFITO-10 / 12345-F", specialty: "Fisioterapia Ortopédica & Esportiva", hours: "07:00 - 16:00", lunch: "12:00 - 13:00", commission: 50 },
-                { id: 2, name: "Dra. Camila Mendes", crefito: "CREFITO-10 / 67890-F", specialty: "Pilates Clínico & Posturologia", hours: "13:00 - 20:00", lunch: "16:30 - 17:15", commission: 45 }
-            ],
-            services: [
-                { id: 1, name: "Avaliação Fisioterapêutica Completa", duration: 60, price: 180, description: "Anamnese detalhada, testes ortopédicos, postural e plano terapêutico." },
-                { id: 2, name: "Sessão de Fisioterapia Ortopédica", duration: 50, price: 130, description: "Terapia manual, liberação miofascial, eletrotermofototerapia e cinesioterapia." },
-                { id: 3, name: "Pilates Clínico Individual", duration: 50, price: 150, description: "Reabilitação e fortalecimento funcional focado em coluna e estabilização." },
-                { id: 4, name: "Quiropraxia & Ajuste Articular", duration: 40, price: 160, description: "Técnicas de manipulação articular rápida e alívio imediato de dores." }
-            ],
-            packagesList: [
-                { id: 1, name: "Pacote 10 Sessões Fisioterapia", sessions: 10, price: 1100, desc: "Economia de R$ 200 • Válido por 90 dias" },
-                { id: 2, name: "Plano Mensal Pilates Clínico (2x/sem)", sessions: 8, price: 1000, desc: "Mensalidade recorrente • Horário Fixo" }
-            ],
             patients: [
-                { id: 1, name: "Mariana Costa", phone: "48988887777", cpf: "123.456.789-00", birth: "1992-05-14", emergency: "João (Esposo) - 48999991111", diagnosis: "Lombalgia Crônica / Protusão L5-S1", anamnese: "Dor lombar há 6 meses, piora ao ficar muito tempo sentada.", consent: true, packageTotal: 10, packageUsed: 3, totalSpent: 1300 },
-                { id: 2, name: "Carlos Eduardo", phone: "48977776666", cpf: "987.654.321-11", birth: "1988-11-20", emergency: "Ana (Mãe) - 48988882222", diagnosis: "Tendinite Patelar Direito (Atleta corrida)", anamnese: "Dor na corrida acima de 8km.", consent: true, packageTotal: 5, packageUsed: 2, totalSpent: 650 }
+                { id: 1, name: "Lucas Gabriel", phone: "48988887777", cpf: "123.456.789-00", birth: "2020-05-14", password: "123", emergency: "Mariana (Mãe) - 48999991111", diagnosis: "Atraso Motor Global / Hipotonia", anamnese: "Nascido pré-termo de 32 semanas. Apresenta atraso na aquisição de marcos motores.", packageTotal: 10, packageUsed: 3 }
             ],
             appointments: [
-                { id: 1, patientId: 1, patientName: "Mariana Costa", serviceId: 2, serviceName: "Fisioterapia Ortopédica", profId: 1, profName: "Dr. Rafael Silva", date: "2026-10-20", time: "09:00", status: "Confirmado" },
-                { id: 2, patientId: 2, patientName: "Carlos Eduardo", serviceId: 1, serviceName: "Avaliação Fisioterapêutica", profId: 1, profName: "Dr. Rafael Silva", date: "2026-10-20", time: "10:00", status: "Concluído" }
+                { id: 1, patientId: 1, patientName: "Lucas Gabriel", serviceName: "Fisioterapia Pediátrica", date: "2026-10-21", time: "14:00", status: "Confirmado" },
+                { id: 2, patientId: 1, patientName: "Lucas Gabriel", serviceName: "Estimulação Precoce", date: "2026-10-18", time: "10:00", status: "Realizado" }
             ],
             records: [
-                { id: 1, patientId: 1, date: "2026-10-10", profName: "Dr. Rafael Silva", painLevel: 7, painRegion: "Lombar", soap: "Subjetivo: dor 7/10 ao levantar. Objetivo: rigidez L-S, ADM flexão limitada. Avaliação: melhora da contratura paravertebral. Plano: liberação miofascial e exercícios de estabilização core." },
-                { id: 2, patientId: 1, date: "2026-10-15", profName: "Dr. Rafael Silva", painLevel: 4, painRegion: "Lombar", soap: "Subjetivo: dor caiu para 4/10. Relata melhora no trabalho. Objetivo: boa resposta aos exercícios domiciliares. Avaliação: evolução positiva. Plano: progressão de carga." }
-            ],
-            exercisesLibrary: [
-                { id: 1, title: "Ponte para Glúteos (Estabilização Lombar)", category: "Fortalecimento", sets: "3 séries", reps: "15 repetições", desc: "Deitado de costas, joelhos flexionados, elevar o quadril contraindo glúteos e abdômen.", video: "https://images.unsplash.com/photo-1518611012118-696072aa579a?auto=format&fit=crop&q=80&w=400" },
-                { id: 2, title: "Alongamento Gato-Vaca (Mobilidade Torácica/Lombar)", category: "Mobilidade", sets: "2 séries", reps: "10 ciclos", desc: "Em quatro apoios, alternar arqueando a coluna para cima e deprimindo para baixo suavemente.", video: "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&q=80&w=400" },
-                { id: 3, title: "Prancha Isometria Frontal", category: "Core", sets: "3 séries", reps: "30 segundos", desc: "Apoiado nos antebraços e pontas dos pés, manter o corpo alinhado sem deixar a pelve cair.", video: "https://images.unsplash.com/photo-1566241142559-40e1dab266c6?auto=format&fit=crop&q=80&w=400" }
-            ],
-            prescriptions: [
-                { id: 1, patientId: 1, exerciseId: 1, assignedDate: "2026-10-15", frequency: "Diário", doneToday: false },
-                { id: 2, patientId: 1, exerciseId: 2, assignedDate: "2026-10-15", frequency: "2x ao dia", doneToday: true }
-            ],
-            products: [
-                { id: 1, name: "Faixa Elástica TheraBand (Média)", stock: 12, price: 45, cost: 20 },
-                { id: 2, name: "Rolo de Liberação Miofascial (Foam Roller)", stock: 6, price: 90, cost: 42 },
-                { id: 3, name: "Gel Condutor Neutro 1kg", stock: 15, price: 35, cost: 16 }
+                { id: 1, patientId: 1, date: "2026-10-18", profName: "Dra. Alessandra", painLevel: 2, painRegion: "Global", soap: "Subjetivo: Mãe relata que Lucas está rolando com mais facilidade. Objetivo: Boa resposta aos estímulos vestibulares, tônus de membros superiores melhorado. Avaliação: Evolução motora constante. Plano: Manter exercícios de prono e sedestação com apoio." }
             ],
             finances: [
-                { id: 1, date: "2026-10-18", type: "receita", desc: "Pacote 10 Sessões - Mariana Costa", amount: 1100, category: "Pacotes" },
-                { id: 2, date: "2026-10-19", type: "despesa", desc: "Aluguel da Clínica Outubro", amount: 2500, category: "Aluguel" },
-                { id: 3, date: "2026-10-19", type: "despesa", desc: "Compra Insumos / Gel Condutor", amount: 320, category: "Insumos" }
+                { id: 1, date: "2026-10-18", type: "receita", desc: "Pacote 10 Sessões - Lucas Gabriel", amount: 1200, category: "Pacotes", status: "Recebido" },
+                { id: 2, date: "2026-10-19", type: "despesa", desc: "Compra Brinquedos Terapêuticos / Rolos", amount: 350, category: "Equipamentos", status: "Pago" }
+            ],
+            staff: [
+                { id: 1, name: "Dra. Alessandra Medeiros", role: "Fisioterapeuta Proprietária", salary: 5000, expenses: 400 }
             ]
         };
 
-        let currentSessionUser = null;
+        let currentSessionUser = null; // { type: 'owner'|'patient'|'master', data: ... }
+        let ownerActiveTab = 'dashboard';
+        let patientActiveTab = 'overview';
 
+        // Carregar dados do Supabase
         async function loadClinicData() {
             try {
                 const response = await fetch(`${SUPABASE_URL}/rest/v1/fisio_data?store_id=eq.${storeId}`, {
-                    headers: {
-                        'apikey': SUPABASE_KEY,
-                        'Authorization': `Bearer ${SUPABASE_KEY}`
-                    }
+                    headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` }
                 });
                 if (response.ok) {
                     const rows = await response.json();
@@ -192,12 +165,10 @@
                     }
                 }
             } catch (err) {
-                console.warn("Usando localStorage (offline/fallback):", err);
                 const local = localStorage.getItem(`fisio_store_${storeId}`);
-                if (local) {
-                    try { dbData = JSON.parse(local); } catch(e){}
-                }
+                if (local) { try { dbData = JSON.parse(local); } catch(e){} }
             }
+            applyTheme();
             renderApp();
         }
 
@@ -212,11 +183,7 @@
                         'Content-Type': 'application/json',
                         'Prefer': 'resolution=merge-duplicates'
                     },
-                    body: JSON.stringify({
-                        store_id: storeId,
-                        data: dbData,
-                        updated_at: new Date().toISOString()
-                    })
+                    body: JSON.stringify({ store_id: storeId, data: dbData, updated_at: new Date().toISOString() })
                 });
                 document.getElementById('connection-indicator').className = "w-2 h-2 rounded-full bg-emerald-500 animate-pulse";
             } catch (err) {
@@ -224,223 +191,425 @@
             }
         }
 
-        function renderApp() {
-            const app = document.getElementById('app');
-            if (currentSessionUser && currentSessionUser.type === 'master') {
-                app.innerHTML = renderMasterDeveloperPanel();
-                return;
+        function applyTheme() {
+            const body = document.getElementById('body-root');
+            if (dbData.config.darkMode) {
+                body.className = "h-full bg-slate-950 text-slate-100 antialiased flex flex-col transition-colors duration-300 dark";
+            } else {
+                body.className = "h-full bg-slate-50 text-slate-900 antialiased flex flex-col transition-colors duration-300";
             }
-            if (currentSessionUser && currentSessionUser.type === 'owner') {
-                app.innerHTML = renderOwnerDashboard();
-                return;
-            }
-            if (currentSessionUser && currentSessionUser.type === 'patient') {
-                app.innerHTML = renderPatientPortal();
-                return;
-            }
-            app.innerHTML = renderSplitScreenLanding();
+            document.getElementById('footer-clinic-name').innerText = dbData.config.name;
         }
 
-        function renderSplitScreenLanding() {
+        // Roteador de Telas
+        function renderApp() {
+            const app = document.getElementById('app');
+            if (currentSessionUser?.type === 'master') { app.innerHTML = renderMasterPanel(); return; }
+            if (currentSessionUser?.type === 'owner') { app.innerHTML = renderOwnerPanel(); return; }
+            if (currentSessionUser?.type === 'patient') { app.innerHTML = renderPatientPortal(); return; }
+            app.innerHTML = renderHomeLanding();
+        }
+
+        // 1. TELA INICIAL PÚBLICA
+        function renderHomeLanding() {
             const cfg = dbData.config;
             return `
                 <div class="flex-1 flex flex-col lg:flex-row min-h-0">
-                    <div class="lg:w-1/2 relative flex flex-col justify-between p-8 lg:p-12 overflow-hidden bg-slate-900">
-                        <div class="absolute inset-0 z-0 opacity-40 bg-cover bg-center" style="background-image: url('${cfg.coverUrl}')"></div>
-                        <div class="absolute inset-0 z-0 bg-gradient-to-t from-slate-950 via-slate-950/60 to-transparent"></div>
+                    <!-- Esquerda: Branding & Logo -->
+                    <div class="lg:w-1/2 bg-slate-900 text-white p-8 lg:p-16 flex flex-col justify-between relative overflow-hidden">
+                        <div class="absolute inset-0 opacity-20 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&q=80&w=1200')"></div>
+                        <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-900/80 to-transparent"></div>
                         
                         <div class="relative z-10 flex items-center justify-between">
-                            <span class="px-3 py-1 rounded-full bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 text-xs font-semibold tracking-wide flex items-center gap-1.5">
-                                <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span> ${cfg.workingHours.split('•')[0]}
+                            <span class="px-3 py-1 rounded-full bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 text-xs font-semibold">
+                                Atendimento com Hora Marcada
                             </span>
-                            <button onclick="openSpecialtiesModal()" class="text-xs text-slate-300 hover:text-white bg-slate-900/80 px-3 py-1.5 rounded-lg border border-slate-700 backdrop-blur transition flex items-center gap-1.5">
-                                <i class="fa-solid fa-stethoscope text-emerald-400"></i> Ver Especialidades & Planos
-                            </button>
                         </div>
 
                         <div class="relative z-10 my-auto py-8">
-                            <div class="w-20 h-20 rounded-2xl bg-gradient-to-br from-emerald-500 to-emerald-700 flex items-center justify-center text-white text-3xl shadow-xl shadow-emerald-900/40 mb-6 border border-emerald-400/30">
-                                ${cfg.logoUrl ? `<img src="${cfg.logoUrl}" class="w-full h-full object-cover rounded-2xl">` : '<i class="fa-solid fa-hand-holding-medical"></i>'}
+                            <div class="w-24 h-24 rounded-2xl bg-white p-2 shadow-xl mb-6 flex items-center justify-center border border-slate-700">
+                                <img src="${cfg.logoUrl || 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&q=80&w=400'}" class="w-full h-full object-contain rounded-xl">
                             </div>
-                            <h1 class="text-3xl lg:text-4xl font-extrabold text-white tracking-tight">${cfg.name}</h1>
+                            <h1 class="text-3xl lg:text-4xl font-extrabold tracking-tight">${cfg.name}</h1>
                             <p class="text-slate-300 text-sm lg:text-base mt-3 max-w-lg leading-relaxed">${cfg.slogan}</p>
                             
                             <div class="mt-6 flex flex-wrap gap-2">
-                                ${cfg.specialties.split('•').map(s => `<span class="px-2.5 py-1 rounded-md bg-slate-900/80 border border-slate-800 text-xs text-slate-300">${s.trim()}</span>`).join('')}
+                                ${cfg.specialties.split('•').map(s => `<span class="px-3 py-1 rounded-lg bg-slate-800/80 border border-slate-700 text-xs text-slate-300">${s.trim()}</span>`).join('')}
                             </div>
                         </div>
 
-                        <div class="relative z-10 text-xs text-slate-400 flex items-center gap-2 border-t border-slate-800/80 pt-4">
+                        <div class="relative z-10 text-xs text-slate-400 border-t border-slate-800 pt-4 flex items-center gap-2">
                             <i class="fa-solid fa-location-dot text-emerald-400"></i> ${cfg.address} • Tel: ${cfg.phone}
                         </div>
                     </div>
 
-                    <div class="lg:w-1/2 bg-slate-950 flex flex-col justify-center items-center p-8 lg:p-16 relative overflow-hidden">
-                        <div class="absolute inset-0 pointer-events-none flex items-center justify-center opacity-5 text-[220px] font-extrabold text-white select-none">
-                            <i class="fa-solid fa-heart-pulse"></i>
-                        </div>
-
-                        <div class="w-full max-w-md relative z-10 glass-panel p-8 rounded-3xl shadow-2xl">
+                    <!-- Direita: Login do Paciente -->
+                    <div class="lg:w-1/2 bg-slate-950 flex flex-col justify-center items-center p-8 lg:p-16 relative">
+                        <div class="w-full max-w-md bg-slate-900/90 border border-slate-800 p-8 rounded-3xl shadow-2xl backdrop-blur-xl">
                             <div class="text-center mb-6">
                                 <h2 class="text-xl font-bold text-white">Portal do Paciente</h2>
-                                <p class="text-xs text-slate-400 mt-1">Digite seu WhatsApp ou Telefone para acessar suas sessões e exercícios</p>
+                                <p class="text-xs text-slate-400 mt-1">Acesse seu histórico, consultas e evolução clínica</p>
                             </div>
-
-                            <form onsubmit="handlePatientQuickLogin(event)" class="space-y-4">
+                            <form onsubmit="handlePatientLogin(event)" class="space-y-4">
                                 <div>
-                                    <label class="block text-xs font-medium text-slate-300 mb-1">WhatsApp / Telefone com DDD</label>
-                                    <div class="relative">
-                                        <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-slate-400"><i class="fa-brands fa-whatsapp text-emerald-400"></i></span>
-                                        <input type="text" id="quick-phone" required placeholder="ex: 48999998888" class="w-full bg-slate-900 border border-slate-800 rounded-xl pl-10 pr-3.5 py-3 text-sm text-white focus:outline-none focus:border-emerald-500">
-                                    </div>
-                                    <p class="text-[11px] text-slate-500 mt-1">Se for seu 1º acesso, cadastraremos seu nome automaticamente.</p>
+                                    <label class="block text-xs font-medium text-slate-300 mb-1">Telefone / WhatsApp ou CPF</label>
+                                    <input type="text" id="pat-login-user" required placeholder="ex: 48988887777" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-emerald-500">
                                 </div>
-                                <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-semibold py-3 px-4 rounded-xl transition shadow-lg shadow-emerald-600/30 flex items-center justify-center gap-2 text-sm">
-                                    <span>Entrar no Portal</span> <i class="fa-solid fa-arrow-right text-xs"></i>
+                                <div>
+                                    <label class="block text-xs font-medium text-slate-300 mb-1">Senha de Acesso</label>
+                                    <input type="password" id="pat-login-pass" required placeholder="••••••••" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-emerald-500">
+                                    <p class="text-[11px] text-slate-500 mt-1">A senha é fornecida pelo fisioterapeuta ao cadastrar.</p>
+                                </div>
+                                <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-semibold py-3 px-4 rounded-xl transition shadow-lg shadow-emerald-600/30 text-sm">
+                                    Entrar no Portal
                                 </button>
                             </form>
-
-                            ${cfg.modules.demoButton ? `
                             <div class="mt-6 pt-6 border-t border-slate-800 text-center">
-                                <button onclick="loginAsDemoPatient()" class="w-full bg-slate-900 hover:bg-slate-800 text-slate-200 border border-slate-700 py-2.5 px-4 rounded-xl text-xs font-medium transition flex items-center justify-center gap-2">
-                                    <i class="fa-solid fa-bolt text-amber-400"></i> ⚡ Entrar com Paciente Demo (Mariana Costa)
+                                <button onclick="loginDemoPatient()" class="w-full bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 py-2.5 px-4 rounded-xl text-xs font-medium transition">
+                                    ⚡ Entrar com Paciente Demo (Lucas)
                                 </button>
-                            </div>` : ''}
+                            </div>
                         </div>
                     </div>
                 </div>
             `;
         }
 
-        function handlePatientQuickLogin(e) {
+        function handlePatientLogin(e) {
             e.preventDefault();
-            const phoneInput = document.getElementById('quick-phone').value.trim().replace(/\D/g, '');
-            let patient = dbData.patients.find(p => p.phone.replace(/\D/g, '') === phoneInput);
+            const user = document.getElementById('pat-login-user').value.trim().replace(/\D/g,'');
+            const pass = document.getElementById('pat-login-pass').value;
+            const pat = dbData.patients.find(p => (p.phone.replace(/\D/g,'') === user || p.cpf.replace(/\D/g,'') === user) && p.password === pass);
             
-            if (!patient) {
-                const name = prompt("Número não cadastrado. Digite seu Nome Completo para criar seu acesso:");
-                if (!name) return;
-                patient = {
-                    id: Date.now(),
-                    name: name.trim(),
-                    phone: phoneInput,
-                    cpf: "Não informado",
-                    birth: "2000-01-01",
-                    emergency: "Não informado",
-                    diagnosis: "Avaliação Inicial Pendente",
-                    anamnese: "Paciente cadastrado via portal web.",
-                    consent: true,
-                    packageTotal: 5,
-                    packageUsed: 0,
-                    totalSpent: 0
-                };
-                dbData.patients.push(patient);
-                saveClinicDataToSupabase();
+            if (pat) {
+                currentSessionUser = { type: 'patient', data: pat };
+                renderApp();
+            } else {
+                alert("Usuário ou senha incorretos. Solicite o cadastro ao fisioterapeuta.");
             }
+        }
 
-            currentSessionUser = { type: 'patient', data: patient };
+        function loginDemoPatient() {
+            currentSessionUser = { type: 'patient', data: dbData.patients[0] };
             renderApp();
         }
 
-        function loginAsDemoPatient() {
-            const demoPat = dbData.patients[0] || { id: 1, name: "Mariana Costa", phone: "48988887777" };
-            currentSessionUser = { type: 'patient', data: demoPat };
-            renderApp();
+        // 2. PAINEL DO PROPRIETÁRIO
+        function renderOwnerPanel() {
+            return `
+                <div class="flex-1 flex flex-col lg:flex-row bg-slate-950 overflow-hidden">
+                    <!-- Sidebar -->
+                    <aside class="w-full lg:w-64 bg-slate-900 border-r border-slate-800 flex flex-col shrink-0 print:hidden">
+                        <div class="p-5 border-b border-slate-800 flex items-center gap-3">
+                            <img src="${dbData.config.logoUrl}" class="w-10 h-10 rounded-lg object-contain bg-white p-1">
+                            <div class="overflow-hidden">
+                                <h3 class="text-xs font-bold text-white truncate">${dbData.config.name}</h3>
+                                <span class="text-[10px] text-emerald-400">Painel do Fisioterapeuta</span>
+                            </div>
+                        </div>
+                        <nav class="flex-1 overflow-y-auto p-4 space-y-1 text-xs font-medium">
+                            <button onclick="setOwnerTab('dashboard')" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition ${ownerActiveTab === 'dashboard' ? 'bg-emerald-600 text-white shadow-lg' : 'text-slate-400 hover:bg-slate-800 hover:text-white'}">
+                                <i class="fa-solid fa-chart-pie w-4"></i> Dashboard & Indicadores
+                            </button>
+                            <button onclick="setOwnerTab('agenda')" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition ${ownerActiveTab === 'agenda' ? 'bg-emerald-600 text-white shadow-lg' : 'text-slate-400 hover:bg-slate-800 hover:text-white'}">
+                                <i class="fa-solid fa-calendar-days w-4"></i> Agenda (Dia / Semana / Mês)
+                            </button>
+                            <button onclick="setOwnerTab('patients')" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition ${ownerActiveTab === 'patients' ? 'bg-emerald-600 text-white shadow-lg' : 'text-slate-400 hover:bg-slate-800 hover:text-white'}">
+                                <i class="fa-solid fa-users w-4"></i> Cadastro & Prontuários (SOAP)
+                            </button>
+                            <button onclick="setOwnerTab('finance')" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition ${ownerActiveTab === 'finance' ? 'bg-emerald-600 text-white shadow-lg' : 'text-slate-400 hover:bg-slate-800 hover:text-white'}">
+                                <i class="fa-solid fa-wallet w-4"></i> Finanças & Caixa
+                            </button>
+                            <button onclick="setOwnerTab('staff')" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition ${ownerActiveTab === 'staff' ? 'bg-emerald-600 text-white shadow-lg' : 'text-slate-400 hover:bg-slate-800 hover:text-white'}">
+                                <i class="fa-solid fa-user-doctor w-4"></i> Funcionários & Salários
+                            </button>
+                            <button onclick="setOwnerTab('settings')" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition ${ownerActiveTab === 'settings' ? 'bg-emerald-600 text-white shadow-lg' : 'text-slate-400 hover:bg-slate-800 hover:text-white'}">
+                                <i class="fa-solid fa-gear w-4"></i> Configurações & Logo
+                            </button>
+                        </nav>
+                        <div class="p-4 border-t border-slate-800">
+                            <button onclick="logoutSession()" class="w-full bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold py-2.5 px-3 rounded-xl transition flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-arrow-right-from-bracket"></i> Sair do Painel
+                            </button>
+                        </div>
+                    </aside>
+
+                    <!-- Conteúdo Principal -->
+                    <main class="flex-1 flex flex-col min-w-0 overflow-y-auto p-6 lg:p-8">
+                        ${renderOwnerTabContent()}
+                    </main>
+                </div>
+            `;
         }
 
+        function setOwnerTab(tab) { ownerActiveTab = tab; renderApp(); }
+
+        function renderOwnerTabContent() {
+            if (ownerActiveTab === 'dashboard') {
+                const totalReceita = dbData.finances.filter(f => f.type === 'receita').reduce((a,b)=>a+b.amount,0);
+                const totalDespesa = dbData.finances.filter(f => f.type === 'despesa').reduce((a,b)=>a+b.amount,0);
+                const atendimentosSemana = dbData.appointments.length;
+                const realizados = dbData.appointments.filter(a => a.status === 'Realizado').length;
+                return `
+                    <div class="space-y-6">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <h2 class="text-xl font-bold text-white">Dashboard da Clínica</h2>
+                                <p class="text-xs text-slate-400">Visão geral de atendimentos e financeiro</p>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5">
+                                <span class="text-xs text-slate-400">Atendimentos na Semana</span>
+                                <h3 class="text-2xl font-extrabold text-emerald-400 mt-1">${atendimentosSemana}</h3>
+                            </div>
+                            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5">
+                                <span class="text-xs text-slate-400">Atendimentos Realizados</span>
+                                <h3 class="text-2xl font-extrabold text-white mt-1">${realizados}</h3>
+                            </div>
+                            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5">
+                                <span class="text-xs text-slate-400">Recebimentos Brutos</span>
+                                <h3 class="text-2xl font-extrabold text-emerald-400 mt-1">R$ ${totalReceita.toLocaleString()}</h3>
+                            </div>
+                            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5">
+                                <span class="text-xs text-slate-400">Gastos & Despesas</span>
+                                <h3 class="text-2xl font-extrabold text-red-400 mt-1">R$ ${totalDespesa.toLocaleString()}</h3>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+            if (ownerActiveTab === 'agenda') {
+                return `
+                    <div class="space-y-6">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <h2 class="text-xl font-bold text-white">Agenda & Consultas</h2>
+                                <p class="text-xs text-slate-400">Gerenciamento diário, semanal e mensal de horários</p>
+                            </div>
+                            <button onclick="openNewAppointmentModal()" class="bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold px-4 py-2.5 rounded-xl shadow-lg transition">
+                                + Agendar Consulta
+                            </button>
+                        </div>
+                        <div class="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden">
+                            <table class="w-full text-left border-collapse text-xs">
+                                <thead class="bg-slate-950 text-slate-400 uppercase font-semibold border-b border-slate-800">
+                                    <tr>
+                                        <th class="p-4">Data / Hora</th>
+                                        <th class="p-4">Paciente</th>
+                                        <th class="p-4">Serviço</th>
+                                        <th class="p-4">Status</th>
+                                        <th class="p-4 text-right">Ações</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-slate-800 text-slate-300">
+                                    ${dbData.appointments.map(a => `
+                                        <tr class="hover:bg-slate-800/50">
+                                            <td class="p-4 font-bold text-white">${a.date} •${a.time}</td>
+                                            <td class="p-4">${a.patientName}</td>
+                                            <td class="p-4">${a.serviceName}</td>
+                                            <td class="p-4"><span class="px-2.5 py-1 rounded-full font-semibold ${a.status === 'Realizado' ? 'bg-emerald-500/20 text-emerald-400' : 'bg-amber-500/20 text-amber-400'}">${a.status}</span></td>
+                                            <td class="p-4 text-right space-x-2">
+                                                <button onclick="completeAppointment(${a.id})" class="text-emerald-400 hover:underline">Realizar</button>
+                                            </td>
+                                        </tr>
+                                    `).join('')}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                `;
+            }
+            if (ownerActiveTab === 'patients') {
+                return `
+                    <div class="space-y-6">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <h2 class="text-xl font-bold text-white">Pacientes & Prontuários (SOAP)</h2>
+                                <p class="text-xs text-slate-400">Cadastre pacientes, gere senhas e envie o acesso via WhatsApp</p>
+                            </div>
+                            <button onclick="openNewPatientModal()" class="bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold px-4 py-2.5 rounded-xl shadow-lg transition">
+                                + Cadastrar Novo Paciente
+                            </button>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            ${dbData.patients.map(p => `
+                                <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 flex flex-col justify-between">
+                                    <div>
+                                        <div class="flex items-center justify-between mb-2">
+                                            <h3 class="text-sm font-bold text-white">${p.name}</h3>
+                                            <span class="text-xs text-emerald-400 font-semibold">Sessões: ${p.packageUsed}/${p.packageTotal}</span>
+                                        </div>
+                                        <p class="text-xs text-slate-400"><i class="fa-brands fa-whatsapp text-emerald-400"></i> ${p.phone} • Senha: <b>${p.password}</b></p>
+                                        <p class="text-xs text-slate-300 mt-2"><b>Diagnóstico:</b> ${p.diagnosis}</p>
+                                    </div>
+                                    <div class="mt-4 pt-4 border-t border-slate-800 flex items-center justify-between gap-2">
+                                        <button onclick="sendWhatsAppAccess(${p.id})" class="bg-emerald-600/20 hover:bg-emerald-600/30 text-emerald-400 text-xs font-semibold px-3 py-2 rounded-xl border border-emerald-500/30">
+                                            <i class="fa-brands fa-whatsapp"></i> Enviar Acesso WhatsApp
+                                        </button>
+                                        <button onclick="openPatientRecords(${p.id})" class="bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold px-3 py-2 rounded-xl border border-slate-700">
+                                            Evolução & Espelho
+                                        </button>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+            if (ownerActiveTab === 'finance') {
+                const totalReceita = dbData.finances.filter(f => f.type === 'receita').reduce((a,b)=>a+b.amount,0);
+                const totalDespesa = dbData.finances.filter(f => f.type === 'despesa').reduce((a,b)=>a+b.amount,0);
+                return `
+                    <div class="space-y-6">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <h2 class="text-xl font-bold text-white">Finanças & Caixa da Clínica</h2>
+                                <p class="text-xs text-slate-400">Controle de recebimentos, cursos, equipamentos e despesas</p>
+                            </div>
+                            <button onclick="openNewExpenseModal()" class="bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold px-4 py-2.5 rounded-xl shadow-lg transition">
+                                + Lançar Despesa / Gasto
+                            </button>
+                        </div>
+                        <div class="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden">
+                            <table class="w-full text-left border-collapse text-xs">
+                                <thead class="bg-slate-950 text-slate-400 uppercase font-semibold border-b border-slate-800">
+                                    <tr>
+                                        <th class="p-4">Data</th>
+                                        <th class="p-4">Descrição</th>
+                                        <th class="p-4">Categoria</th>
+                                        <th class="p-4">Tipo</th>
+                                        <th class="p-4 text-right">Valor</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-slate-800 text-slate-300">
+                                    ${dbData.finances.map(f => `
+                                        <tr class="hover:bg-slate-800/50">
+                                            <td class="p-4">${f.date}</td>
+                                            <td class="p-4 font-medium text-white">${f.desc}</td>
+                                            <td class="p-4"><span class="px-2 py-0.5 rounded bg-slate-800">${f.category}</span></td>
+                                            <td class="p-4"><span class="px-2 py-0.5 rounded font-bold ${f.type === 'receita' ? 'bg-emerald-500/20 text-emerald-400' : 'bg-red-500/20 text-red-400'}">${f.type.toUpperCase()}</span></td>
+                                            <td class="p-4 text-right font-bold ${f.type === 'receita' ? 'text-emerald-400' : 'text-red-400'}">R$ ${f.amount}</td>
+                                        </tr>
+                                    `).join('')}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                `;
+            }
+            if (ownerActiveTab === 'staff') {
+                return `
+                    <div class="space-y-6">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <h2 class="text-xl font-bold text-white">Funcionários & Custos de Equipe</h2>
+                                <p class="text-xs text-slate-400">Gerencie salários e colaboradores</p>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            ${dbData.staff.map(s => `
+                                <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5">
+                                    <h3 class="text-base font-bold text-white">${s.name}</h3>
+                                    <p class="text-xs text-emerald-400 font-semibold mt-0.5">${s.role}</p>
+                                    <p class="text-xs text-slate-400 mt-3">Salário / Custo Mensal: <b>R$ ${s.salary}</b></p>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+            if (ownerActiveTab === 'settings') {
+                const cfg = dbData.config;
+                return `
+                    <div class="space-y-6 max-w-2xl">
+                        <div>
+                            <h2 class="text-xl font-bold text-white">Configurações & Identidade Visual</h2>
+                            <p class="text-xs text-slate-400">Personalize a logo, nome, especialidades e tema</p>
+                        </div>
+                        <form onsubmit="saveClinicSettings(event)" class="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-4">
+                            <div>
+                                <label class="block text-xs font-medium text-slate-300 mb-1">Nome da Clínica</label>
+                                <input type="text" id="set-name" value="${cfg.name}" required class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-sm text-white">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-medium text-slate-300 mb-1">Slogan</label>
+                                <input type="text" id="set-slogan" value="${cfg.slogan}" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-sm text-white">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-medium text-slate-300 mb-1">URL da Logo</label>
+                                <input type="text" id="set-logo" value="${cfg.logoUrl}" placeholder="https://..." class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-sm text-white">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-medium text-slate-300 mb-1">Especialidades (separadas por •)</label>
+                                <input type="text" id="set-specs" value="${cfg.specialties}" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-sm text-white">
+                            </div>
+                            <div class="flex items-center gap-3 pt-2">
+                                <input type="checkbox" id="set-dark" ${cfg.darkMode ? 'checked' : ''} class="w-4 h-4 accent-emerald-600">
+                                <label for="set-dark" class="text-xs text-slate-300">Modo Escuro Ativo</label>
+                            </div>
+                            <button type="submit" class="bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-xs py-3 px-5 rounded-xl shadow-lg transition">
+                                Salvar Configurações
+                            </button>
+                        </form>
+                    </div>
+                `;
+            }
+            return '';
+        }
+
+        // 3. PORTAL DO PACIENTE LOGADO
         function renderPatientPortal() {
             const pat = currentSessionUser.data;
-            const myAppts = dbData.appointments.filter(a => a.patientId === pat.id);
-            const myPrescriptions = dbData.prescriptions.filter(p => p.patientId === pat.id);
             const myRecords = dbData.records.filter(r => r.patientId === pat.id);
+            const myAppts = dbData.appointments.filter(a => a.patientId === pat.id);
 
             return `
                 <div class="flex-1 flex flex-col bg-slate-950 overflow-y-auto">
                     <header class="bg-slate-900 border-b border-slate-800 px-6 py-4 flex items-center justify-between sticky top-0 z-20">
                         <div class="flex items-center gap-3">
-                            <div class="w-10 h-10 rounded-xl bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 flex items-center justify-center font-bold text-base">
+                            <div class="w-10 h-10 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-bold">
                                 ${pat.name.charAt(0)}
                             </div>
                             <div>
                                 <h2 class="text-sm font-bold text-white">Olá, ${pat.name}</h2>
-                                <p class="text-xs text-slate-400">Pacote Ativo: <span class="text-emerald-400 font-semibold">${pat.packageTotal - pat.packageUsed} sessões restantes</span></p>
+                                <p class="text-xs text-slate-400">Sessões Restantes: <span class="text-emerald-400 font-semibold">${pat.packageTotal - pat.packageUsed}</span></p>
                             </div>
                         </div>
-                        <div class="flex items-center gap-3">
-                            <button onclick="logoutSession()" class="text-xs text-slate-400 hover:text-white bg-slate-800 px-3 py-2 rounded-lg border border-slate-700 transition flex items-center gap-1.5">
-                                <i class="fa-solid fa-arrow-right-from-bracket"></i> Sair
-                            </button>
-                        </div>
+                        <button onclick="logoutSession()" class="text-xs text-slate-400 hover:text-white bg-slate-800 px-3 py-2 rounded-lg border border-slate-700">
+                            Sair
+                        </button>
                     </header>
 
-                    <main class="max-w-6xl w-full mx-auto p-6 space-y-6 flex-1">
-                        <div class="bg-gradient-to-r from-emerald-950/60 to-slate-900 border border-emerald-500/30 rounded-2xl p-5 flex flex-col md:flex-row items-center justify-between gap-4">
-                            <div class="flex items-center gap-4">
-                                <div class="w-12 h-12 rounded-xl bg-emerald-500 text-slate-950 font-bold flex items-center justify-center text-xl shadow-lg">
-                                    <i class="fa-solid fa-heart-pulse"></i>
-                                </div>
-                                <div>
-                                    <h3 class="text-base font-bold text-white">Seu Tratamento na ${dbData.config.name}</h3>
-                                    <p class="text-xs text-slate-300 mt-0.5">Diagnóstico: <span class="text-emerald-400 font-medium">${pat.diagnosis}</span></p>
-                                </div>
+                    <main class="max-w-5xl w-full mx-auto p-6 space-y-6">
+                        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6">
+                            <h3 class="text-sm font-bold text-white mb-4"><i class="fa-solid fa-notes-medical text-emerald-400"></i> Minhas Evoluções Clínicas & Histórico</h3>
+                            <div class="space-y-4">
+                                ${myRecords.length === 0 ? '<p class="text-xs text-slate-500">Nenhum registro clínico ainda.</p>' : ''}
+                                ${myRecords.map(r => `
+                                    <div class="bg-slate-950 border border-slate-800 rounded-xl p-4">
+                                        <div class="flex justify-between text-xs text-slate-400 mb-2">
+                                            <span><b>${r.date}</b> •${r.profName}</span>
+                                            <span class="text-emerald-400 font-bold">EVA Dor: ${r.painLevel}/10</span>
+                                        </div>
+                                        <p class="text-xs text-slate-300 leading-relaxed">${r.soap}</p>
+                                    </div>
+                                `).join('')}
                             </div>
-                            <button onclick="openBookingModalForPatient(${pat.id})" class="bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-xs px-5 py-3 rounded-xl shadow-lg shadow-emerald-600/30 transition flex items-center gap-2">
-                                <i class="fa-solid fa-calendar-plus"></i> Agendar Nova Sessão
-                            </button>
                         </div>
 
-                        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                            <div class="lg:col-span-2 space-y-6">
-                                ${dbData.config.modules.exercises ? `
-                                <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6">
-                                    <div class="flex items-center justify-between mb-4">
-                                        <h3 class="text-sm font-bold text-white flex items-center gap-2">
-                                            <i class="fa-solid fa-dumbbell text-emerald-400"></i> Meus Exercícios em Casa
-                                        </h3>
-                                        <span class="text-xs text-slate-400">${myPrescriptions.length} exercícios</span>
+                        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6">
+                            <h3 class="text-sm font-bold text-white mb-4"><i class="fa-solid fa-calendar-days text-emerald-400"></i> Minhas Consultas Agendadas</h3>
+                            <div class="space-y-3">
+                                ${myAppts.map(a => `
+                                    <div class="bg-slate-950 border border-slate-800 rounded-xl p-4 flex justify-between items-center text-xs">
+                                        <div>
+                                            <p class="font-bold text-white">${a.date} às ${a.time}</p>
+                                            <p class="text-slate-400">${a.serviceName}</p>
+                                        </div>
+                                        <span class="px-2.5 py-1 rounded-full font-semibold bg-emerald-500/20 text-emerald-400">${a.status}</span>
                                     </div>
-                                    <div class="space-y-3">
-                                        ${myPrescriptions.length === 0 ? '<p class="text-xs text-slate-500 italic py-4 text-center">Nenhum exercício prescrito.</p>' : ''}
-                                        ${myPrescriptions.map(p => {
-                                            const ex = dbData.exercisesLibrary.find(item => item.id == p.exerciseId) || { title: "Exercício", category: "Geral", sets: "3x", reps: "10x", desc: "", video: "" };
-                                            return `
-                                                <div class="bg-slate-950 border border-slate-800/80 rounded-xl p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-                                                    <div class="flex items-start gap-3">
-                                                        <img src="${ex.video}" class="w-16 h-16 rounded-lg object-cover border border-slate-800 shrink-0">
-                                                        <div>
-                                                            <span class="text-[10px] uppercase font-bold text-emerald-400">${ex.category} • ${p.frequency}</span>
-                                                            <h4 class="text-sm font-bold text-white mt-0.5">${ex.title}</h4>
-                                                            <p class="text-xs text-slate-400 mt-1">${ex.sets} • ${ex.reps}</p>
-                                                        </div>
-                                                    </div>
-                                                    <button onclick="togglePrescriptionDone(${p.id})" class="px-4 py-2 rounded-lg text-xs font-semibold transition ${p.doneToday ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/40' : 'bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700'}">
-                                                        ${p.doneToday ? '<i class="fa-solid fa-check"></i> Feito Hoje' : '✓ Marcar como Feito'}
-                                                    </button>
-                                                </div>
-                                            `;
-                                        }).join('')}
-                                    </div>
-                                </div>` : ''}
-                            </div>
-
-                            <div class="space-y-6">
-                                <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6">
-                                    <h3 class="text-sm font-bold text-white mb-4 flex items-center gap-2">
-                                        <i class="fa-solid fa-calendar-days text-emerald-400"></i> Minhas Consultas
-                                    </h3>
-                                    <div class="space-y-3">
-                                        ${myAppts.length === 0 ? '<p class="text-xs text-slate-500 italic py-4 text-center">Nenhuma consulta.</p>' : ''}
-                                        ${myAppts.map(a => `
-                                            <div class="bg-slate-950 border border-slate-800/80 rounded-xl p-3.5">
-                                                <div class="flex items-center justify-between mb-1">
-                                                    <span class="text-xs font-bold text-white">${a.date} às ${a.time}</span>
-                                                    <span class="text-[10px] px-2 py-0.5 rounded font-semibold ${a.status === 'Concluído' ? 'bg-emerald-500/20 text-emerald-400' : 'bg-amber-500/20 text-amber-400'}">${a.status}</span>
-                                                </div>
-                                                <p class="text-xs text-slate-300">${a.serviceName}</p>
-                                            </div>
-                                        `).join('')}
-                                    </div>
-                                </div>
+                                `).join('')}
                             </div>
                         </div>
                     </main>
@@ -448,43 +617,106 @@
             `;
         }
 
-        function togglePrescriptionDone(prescId) {
-            const p = dbData.prescriptions.find(item => item.id == prescId);
-            if (p) {
-                p.doneToday = !p.doneToday;
+        // Funções Auxiliares & Ações
+        function openNewPatientModal() {
+            const name = prompt("Nome completo do paciente:");
+            if (!name) return;
+            const phone = prompt("WhatsApp (com DDD):", "48999998888");
+            const pass = prompt("Defina a senha de acesso do paciente:", "123");
+            const diag = prompt("Diagnóstico clínico:", "Avaliação inicial");
+            
+            dbData.patients.push({
+                id: Date.now(),
+                name,
+                phone,
+                cpf: "000.000.000-00",
+                birth: "2015-01-01",
+                password: pass || "123",
+                emergency: "Não informado",
+                diagnosis: diag,
+                anamnese: "Cadastrado pelo proprietário",
+                packageTotal: 10,
+                packageUsed: 0
+            });
+            saveClinicDataToSupabase();
+            renderApp();
+            alert("Paciente cadastrado com sucesso!");
+        }
+
+        function sendWhatsAppAccess(patId) {
+            const pat = dbData.patients.find(p => p.id === patId);
+            if (!pat) return;
+            const link = window.location.origin + window.location.pathname;
+            const msg = `Olá *${pat.name}*! Segue o link de acesso ao seu portal na *${dbData.config.name}*:\n\n🔗 ${link}\n👤 Seu usuário/telefone: ${pat.phone}\n🔑 Sua senha de acesso: *${pat.password}*\n\nPor lá você acompanhará seu histórico e evoluções!`;
+            window.open(`https://wa.me/55${pat.phone.replace(/\D/g,'')}?text=${encodeURIComponent(msg)}`, '_blank');
+        }
+
+        function openPatientRecords(patId) {
+            const pat = dbData.patients.find(p => p.id === patId);
+            const recs = dbData.records.filter(r => r.patientId === patId);
+            
+            const printWindow = window.open('', '_blank');
+            printWindow.document.write(`
+                <html>
+                <head>
+                    <title>Espelho Clínico - ${pat.name}</title>
+                    <script src="https://cdn.tailwindcss.com"></script>
+                </head>
+                <body class="bg-white text-slate-900 p-8">
+                    <div class="max-w-3xl mx-auto space-y-6">
+                        <div class="flex items-center justify-between border-b pb-4">
+                            <div class="flex items-center gap-4">
+                                <img src="${dbData.config.logoUrl}" class="w-16 h-16 object-contain">
+                                <div>
+                                    <h1 class="text-xl font-bold">${dbData.config.name}</h1>
+                                    <p class="text-xs text-slate-500">${dbData.config.address} • Tel: ${dbData.config.phone}</p>
+                                </div>
+                            </div>
+                            <div class="text-right text-xs">
+                                <p><b>Paciente:</b> ${pat.name}</p>
+                                <p><b>Diagnóstico:</b> ${pat.diagnosis}</p>
+                            </div>
+                        </div>
+                        <h2 class="text-lg font-bold">Espelho de Evolução Clínica (SOAP)</h2>
+                        <div class="space-y-4">
+                            ${recs.map(r => `
+                                <div class="border rounded-xl p-4 text-xs space-y-1">
+                                    <p><b>Data:</b> ${r.date} | <b>Profissional:</b> ${r.profName} \vert{} <b>Dor EVA:</b>${r.painLevel}/10</p>
+                                    <p class="mt-2 text-slate-700 leading-relaxed">${r.soap}</p>
+                                </div>
+                            `).join('')}
+                        </div>
+                        <div class="pt-8 text-center text-xs text-slate-400">
+                            <p>Documento gerado eletronicamente por ${dbData.config.name}</p>
+                        </div>
+                    </div>
+                </body>
+                </html>
+            `);
+            printWindow.document.close();
+            printWindow.print();
+        }
+
+        function saveClinicSettings(e) {
+            e.preventDefault();
+            dbData.config.name = document.getElementById('set-name').value;
+            dbData.config.slogan = document.getElementById('set-slogan').value;
+            dbData.config.logoUrl = document.getElementById('set-logo').value;
+            dbData.config.specialties = document.getElementById('set-specs').value;
+            dbData.config.darkMode = document.getElementById('set-dark').checked;
+            saveClinicDataToSupabase();
+            applyTheme();
+            alert("Configurações salvas com sucesso!");
+            renderApp();
+        }
+
+        function completeAppointment(id) {
+            const appt = dbData.appointments.find(a => a.id === id);
+            if (appt) {
+                appt.status = 'Realizado';
                 saveClinicDataToSupabase();
                 renderApp();
             }
-        }
-
-        function renderOwnerDashboard() {
-            return `
-                <div class="flex-1 flex flex-col bg-slate-950 p-6">
-                    <div class="flex justify-between items-center mb-6">
-                        <h2 class="text-xl font-bold text-white">Painel do Proprietário - ${dbData.config.name}</h2>
-                        <button onclick="logoutSession()" class="bg-slate-800 text-xs px-3 py-2 rounded-lg text-slate-300">Sair</button>
-                    </div>
-                    <div class="bg-slate-900 p-6 rounded-2xl border border-slate-800">
-                        <p class="text-xs text-slate-400">Bem-vindo ao painel gerencial da clínica. Utilize o rodapé ou os atalhos para gerenciar agenda e pacientes.</p>
-                        <button onclick="logoutSession()" class="mt-4 bg-emerald-600 text-white text-xs px-4 py-2 rounded-xl">Voltar à Página Inicial</button>
-                    </div>
-                </div>
-            `;
-        }
-
-        function renderMasterDeveloperPanel() {
-            return `
-                <div class="flex-1 flex flex-col bg-slate-950 p-6">
-                    <div class="flex justify-between items-center mb-6">
-                        <h2 class="text-xl font-bold text-amber-400">Painel Master do Desenvolvedor</h2>
-                        <button onclick="logoutSession()" class="bg-slate-800 text-xs px-3 py-2 rounded-lg text-slate-300">Sair</button>
-                    </div>
-                    <div class="bg-slate-900 p-6 rounded-2xl border border-slate-800 space-y-4">
-                        <p class="text-xs text-slate-300">Clínica Atual na URL: <code class="text-emerald-400">?clinica=${storeId}</code></p>
-                        <button onclick="logoutSession()" class="bg-emerald-600 text-white text-xs px-4 py-2 rounded-xl">Sair para o Site</button>
-                    </div>
-                </div>
-            `;
         }
 
         function openOwnerLoginModal() {
@@ -492,7 +724,7 @@
             document.getElementById('owner-login-modal').classList.add('flex');
         }
         function closeOwnerLoginModal() {
-            document.getElementById('owner-login-modal').classList.remove('flex');
+            document.getElementById('owner-login-modal').classList.remove('hidden');
             document.getElementById('owner-login-modal').classList.add('hidden');
         }
         function fillDemoOwnerLogin() {
@@ -520,40 +752,9 @@
             alert("E-mail ou senha incorretos.");
         }
 
-        function logoutSession() {
-            currentSessionUser = null;
-            renderApp();
-        }
+        function logoutSession() { currentSessionUser = null; renderApp(); }
 
-        function openSpecialtiesModal() {
-            alert(`${dbData.config.name}\n\nEspecialidades: ${dbData.config.specialties}\n\nHorários: ${dbData.config.workingHours}`);
-        }
-
-        function openBookingModalForPatient(patId) {
-            const servName = prompt("Escolha o Serviço:\n1. Fisioterapia Ortopédica (R$ 130)\n2. Avaliação Fisioterapêutica (R$ 180)", "Fisioterapia Ortopédica");
-            if (!servName) return;
-            const date = prompt("Data (AAAA-MM-DD):", "2026-10-21");
-            const time = prompt("Horário (ex: 14:00):", "14:00");
-            if (!date || !time) return;
-
-            dbData.appointments.push({
-                id: Date.now(),
-                patientId: patId,
-                patientName: currentSessionUser.data.name,
-                serviceName: servName,
-                profName: dbData.professionals[0].name,
-                date: date,
-                time: time,
-                status: "Confirmado"
-            });
-            saveClinicDataToSupabase();
-            alert("Consulta agendada com sucesso!");
-            renderApp();
-        }
-
-        window.addEventListener('DOMContentLoaded', () => {
-            loadClinicData();
-        });
+        window.addEventListener('DOMContentLoaded', () => { loadClinicData(); });
     </script>
 </body>
 </html>
